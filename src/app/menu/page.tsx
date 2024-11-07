@@ -6,10 +6,18 @@ import {FiPlus} from 'react-icons/fi'
 export default function Menu() {
     return (
       <div className={styles.menuPage}>
+        <Image 
+        className={styles.imgcoffee} 
+        src={coffeimg} 
+        alt="logo" 
+        width={100} 
+        height={100} 
+        objectFit='cover' // A imagem cobre toda área de fundo
+    quality={100}
+    priority={true}
+        />
         <div className={styles.content}>
-          <div className={styles.divcoffee}>
-            <Image src={coffeimg} alt="logo" width={100} height={100} />
-          </div>
+         
           <div className={styles.menuContainer}> 
           <div className={styles.menuSection}>
             {/* Nossas Tortas */}
