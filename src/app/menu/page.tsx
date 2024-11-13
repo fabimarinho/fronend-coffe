@@ -1,143 +1,198 @@
+"use client";
+import { useState } from 'react'
 import styles from './styles.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
 import coffeimg from '../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg'
 import {FiPlus} from 'react-icons/fi'
+
+interface Produto {
+  product:string, 
+  price:number, 
+  description:string
+}
+
 export default function Menu() {
-    return (
-      <div className={styles.menuPage}>
-        <Image 
-        className={styles.imgcoffee} 
-        src={coffeimg} 
-        alt="logo" 
-        width={100} 
-        height={100} 
-        objectFit='cover' // A imagem cobre toda área de fundo
-    quality={100}
-    priority={true}
-        />
-        <div className={styles.content}>
-         
-          <div className={styles.menuContainer}> 
-          <div className={styles.menuSection}>
-            {/* Nossas Tortas */}
-            <div className={styles.menuCategory}>
-              <h2>Nossas Tortas</h2>
-              <ul>
-                <li>
-                  <strong>Torta de Chocolate</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button> <br/>
-                  -Fatia de torta de chocolate grego, com chantilly.
-                
-                </li>
-                <li>
-                  <strong>Torta de Morango</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta de morango silvestre
-                </li>
-                <li>
-                  <strong>Torta de Banana</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta de banana com canela
-                </li>
-                <li>
-                  <strong>Torta de Maçã</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta de maçã do nordeste brasileiro
-                </li>
-                <li>
-                  <strong>Torta de Nozes</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta de nozes americanas
-                </li>
-                <li>
-                  <strong>Torta de Abacaxi</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta de abacaxi caramelizado
-                </li>
-                <li>
-                  <strong>Torta de Limão</strong> 
-                  <button className={styles.iconlink} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Fatia de torta com cobertura de chocolate branco
-                </li>
-              </ul>
-            </div>
+  const [data, setData] = useState<Produto[]>([])
+  function handleAdd(product:string, price:number, description:string):void{
+  const novoItem:Produto = {product, price,description};
+   setData(prevData => [...prevData, novoItem]);
+    
+  }
+
+  function ProductToQuary(produto:Produto){
+   return{
+    product:produto.product,
+    price:produto.price.toString(),
+    description:produto.description
+   }
+  }
+  return (
+    <div className={styles.menuPage}>
+      <h1>"Sinta o sabor da felicidade em cada gole de café e em cada fatia de torta" </h1>
+      <h2> Uma combinação que vai deixar seu dia ainda mais doce!</h2>
+      <Image
+        className={styles.imgcoffee}
+        src={coffeimg}
+        alt="Imagem de fundo"
+        objectFit="cover"
+        quality={100}
+        priority={true}
+      />
+      <div className={styles.content}>
+        <div className={styles.menuContainer}>
+          {/*Retângulo para Nossas tortas*/}
+
+          <div className={styles.transparentRectangle}>
+            <h2>Nossas Tortas</h2>
+            <ul>
+              <li>
+                <div>
+                  <strong>Torta de Chocolate  - R$ 12,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de chocolate grego, com chantilly.</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Chocolate',12,'Fatia de torta de chocolate grego, com chantilly')}>
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Morango - R$ 10,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de morango silvestre</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Morango',10,'Fatia de torta de morango silvestre')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Banana - R$ 9,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de banana com canela</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Banana',9,'Fatia de torta de banana com canela')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Maçã - R$ 11,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de maçã do nordeste brasileiro</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Maçã',11,'Fatia de torta de maçã do nordeste brasileiro')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Nozes - R$ 14,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de nozes americanas</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Nozes',14,'Fatia de torta de nozes americanas')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Abacaxi - R$ 8,00</strong>
+                  <p className={styles.descricao}>- Fatia de torta de abacaxi caramelizado</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Abacaxi',8,'Fatia de torta de abacaxi caramelizado')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Torta de Limão - R$ 10,00</strong> 
+                  <p className={styles.descricao}>- Fatia de torta limãocom cobertura de chocolate branco</p>
+                </div>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Limão',10,'Fatia de torta de limão com cobertura de chocolate branco')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+            </ul>
           </div>
-  <div>
-            {/* Nossos Cafés */}
-            <div className={styles.menuCategory}>
-              <h2>Nossos Cafés</h2>
-              <ul>
-                <li>
-                  <strong>Expresso</strong> 
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Grãos cuidadosamente selecionados
-                </li>
-                <li>
-                  <strong>Cappuccino</strong> 
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Expresso com leite vaporizado
-                </li>
-                <li>
-                  <strong>Afogato</strong> 
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Expresso com sorvete
-                </li>
-                <li>
-                  <strong>Café Macchiato</strong> - café manchado com leite vaporizado
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Café manchado com leite vaporizado
-                </li>
-                <li>
-                  <strong>Chocolate Quente</strong> 
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button> <br/>
-                  - Leite vaporizado com manchas de chocolate
-                </li>
-                <li>
-                  <strong>Café Gelado</strong> 
-                  <button className={styles.iconCafe} >
-                  < FiPlus className={styles.plusIcon}/>
-                  </button><br/>
-                  - Frappe de café
-                </li>
+
+          {/* Nossos Cafés */}
+          <div className={styles.roundedRectangle}>
+            <h2>Nossos Cafés</h2>
+            <ul>
+              <li>
+                <div>
+                  <strong>Expresso - R$ 5,00</strong>
+                  <p className={styles.descriCafe}>- Grãos cuidadosamente selecionados</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Expresso',5,'Grãos cuidadosamente selecionados')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Cappuccino - R$ 7,00</strong>
+                  <p className={styles.descriCafe}>- Expresso com leite vaporizado</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Cappuccino',7,'Expresso com leite vaporizado')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Afogato - R$ 9,00</strong>
+                  <p className={styles.descriCafe}>- Expresso com sorvete</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Afogato',9,'Expresso com sorvete')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Café Macchiato - R$ 6,50</strong>
+                  <p className={styles.descriCafe}>- Café manchado com leite vaporizado</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Café Macchiato',6.5,'Café manchado com leite vaporizado')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Chocolate Quente - R$ 8,00</strong>
+                  <p className={styles.descriCafe}>- Leite vaporizado com manchas de chocolate</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Chocolate Quente',8,'Leite vaporizado com manchas de chocolate')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+              </li>
+              <li>
+                <div>
+                  <strong>Café Gelado - R$ 6,00</strong>
+                  <p className={styles.descriCafe}>- Frappe de café</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Café Gelado',6,'Frappe de café')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
                 
-              </ul>
-              </div>
-            </div>
-          </div>
-  
-          {/* Carrinho */}
-          <div className={styles.cart}>
-            <Link href="/carrinho" className={styles.cartButton}>
-              Visualizar no carrinho <span className={styles.cartIcon}>🛒</span>
-            </Link>
+              </li>
+              <li>
+                <div>
+                  <strong>Leite Macchiado - R$ 7,50</strong>
+                  <p className={styles.descriCafe}>- Leite vaporizado, manchado com café</p>
+                </div>
+                <button className={styles.iconCafe} onClick={() => handleAdd('Leite Macchiato',7.5,'Leite vaporizado, manchado com café')} >
+                  <FiPlus className={styles.plusIcon} />
+                </button>
+                
+              </li>
+            </ul>
           </div>
         </div>
-        
+
+        {/* Carrinho */}
+        <div className={styles.cart}>
+          <Link href="/carrinho"  className={styles.cartButton}>
+            Visualizar no carrinho <span className={styles.cartIcon}>🛒</span>
+          </Link>
+          <p> "OBS: Todas as bebidas têm o mesmo tamanho de 200ml"</p>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}

@@ -1,0 +1,106 @@
+.cartContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .cartTitle h1 {
+    font-size: 3em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .cartItems {
+    margin: 20px 0;
+  }
+  
+  .cartItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .itemImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+  
+  .itemDetails {
+    flex: 1;
+  }
+  
+  .itemInfo {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+  }
+  
+  .cartSummary {
+    margin-top: 20px;
+    text-align: right;
+    font-weight: bold;
+  }
+  
+  .cartButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .buttonRed, .buttonGreen {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .buttonRed {
+    background-color: #b33a3a;
+    color: white;
+  }
+  
+  .buttonGreen {
+    background-color: #3a9d3a;
+    color: white;
+  }
+  
+  .buttonRed:hover, .buttonGreen:hover {
+    transform: scale(1.05);
+  }
+  
+  .cartActions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .hintText {
+    color: gray;
+    font-size: 0.9em;
+  }
+  
+  .buttonText {
+    background: none;
+    border: none;
+    color: #b33a3a;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .buttonText:hover {
+    color: #000;
+  }
+  

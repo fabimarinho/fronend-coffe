@@ -26,7 +26,7 @@ export default function Header() {
                         <Link href="/">
                         Home
                         </Link>
-                        <Link href="/">Menu</Link>
+                        <Link href="/menu">Menu</Link>
                         <Link href="/contatos">
                         Contatos
                         </Link>
