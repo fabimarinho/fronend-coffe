@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './styles.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,24 +9,25 @@ import {FiPlus} from 'react-icons/fi'
 interface Produto {
   product:string, 
   price:number, 
-  description:string
+  quantity: number;
 }
 
 export default function Menu() {
   const [data, setData] = useState<Produto[]>([])
-  function handleAdd(product:string, price:number, description:string):void{
-  const novoItem:Produto = {product, price,description};
-   setData(prevData => [...prevData, novoItem]);
-    
+  function handleAdd(product: string, price: number, quantity: number): void {
+    const novoItem: Produto = { product, price, quantity };
+    const updatedCart = [...data, novoItem];
+    setData(updatedCart);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCart)); // Salva o estado no localStorage
   }
 
-  function ProductToQuary(produto:Produto){
-   return{
-    product:produto.product,
-    price:produto.price.toString(),
-    description:produto.description
-   }
-  }
+  useEffect(() => {
+    // Carrega o estado inicial do carrinho do localStorage
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      setData(JSON.parse(savedCart));
+    }
+  }, []);
   return (
     <div className={styles.menuPage}>
       <h1>"Sinta o sabor da felicidade em cada gole de café e em cada fatia de torta" </h1>
@@ -51,7 +52,7 @@ export default function Menu() {
                   <strong>Torta de Chocolate  - R$ 12,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de chocolate grego, com chantilly.</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Chocolate',12,'Fatia de torta de chocolate grego, com chantilly')}>
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Chocolate',12,1)}>
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -60,7 +61,7 @@ export default function Menu() {
                   <strong>Torta de Morango - R$ 10,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de morango silvestre</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Morango',10,'Fatia de torta de morango silvestre')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Morango',10,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -69,7 +70,7 @@ export default function Menu() {
                   <strong>Torta de Banana - R$ 9,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de banana com canela</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Banana',9,'Fatia de torta de banana com canela')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Banana',9,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -78,7 +79,7 @@ export default function Menu() {
                   <strong>Torta de Maçã - R$ 11,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de maçã do nordeste brasileiro</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Maçã',11,'Fatia de torta de maçã do nordeste brasileiro')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Maçã',11,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -87,7 +88,7 @@ export default function Menu() {
                   <strong>Torta de Nozes - R$ 14,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de nozes americanas</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Nozes',14,'Fatia de torta de nozes americanas')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Nozes',14,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -96,7 +97,7 @@ export default function Menu() {
                   <strong>Torta de Abacaxi - R$ 8,00</strong>
                   <p className={styles.descricao}>- Fatia de torta de abacaxi caramelizado</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Abacaxi',8,'Fatia de torta de abacaxi caramelizado')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Abacaxi',8,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -105,7 +106,7 @@ export default function Menu() {
                   <strong>Torta de Limão - R$ 10,00</strong> 
                   <p className={styles.descricao}>- Fatia de torta limãocom cobertura de chocolate branco</p>
                 </div>
-                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Limão',10,'Fatia de torta de limão com cobertura de chocolate branco')} >
+                <button className={styles.iconlink} onClick={() => handleAdd('Torta de Limão',10,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -121,7 +122,7 @@ export default function Menu() {
                   <strong>Expresso - R$ 5,00</strong>
                   <p className={styles.descriCafe}>- Grãos cuidadosamente selecionados</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Expresso',5,'Grãos cuidadosamente selecionados')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Expresso',5,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -130,7 +131,7 @@ export default function Menu() {
                   <strong>Cappuccino - R$ 7,00</strong>
                   <p className={styles.descriCafe}>- Expresso com leite vaporizado</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Cappuccino',7,'Expresso com leite vaporizado')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Cappuccino',7,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -139,7 +140,7 @@ export default function Menu() {
                   <strong>Afogato - R$ 9,00</strong>
                   <p className={styles.descriCafe}>- Expresso com sorvete</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Afogato',9,'Expresso com sorvete')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Afogato',9,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -148,7 +149,7 @@ export default function Menu() {
                   <strong>Café Macchiato - R$ 6,50</strong>
                   <p className={styles.descriCafe}>- Café manchado com leite vaporizado</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Café Macchiato',6.5,'Café manchado com leite vaporizado')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Café Macchiato',6.5,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -157,7 +158,7 @@ export default function Menu() {
                   <strong>Chocolate Quente - R$ 8,00</strong>
                   <p className={styles.descriCafe}>- Leite vaporizado com manchas de chocolate</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Chocolate Quente',8,'Leite vaporizado com manchas de chocolate')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Chocolate Quente',8,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
               </li>
@@ -166,7 +167,7 @@ export default function Menu() {
                   <strong>Café Gelado - R$ 6,00</strong>
                   <p className={styles.descriCafe}>- Frappe de café</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Café Gelado',6,'Frappe de café')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Café Gelado',6,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
                 
@@ -176,7 +177,7 @@ export default function Menu() {
                   <strong>Leite Macchiado - R$ 7,50</strong>
                   <p className={styles.descriCafe}>- Leite vaporizado, manchado com café</p>
                 </div>
-                <button className={styles.iconCafe} onClick={() => handleAdd('Leite Macchiato',7.5,'Leite vaporizado, manchado com café')} >
+                <button className={styles.iconCafe} onClick={() => handleAdd('Leite Macchiato',7.5,1)} >
                   <FiPlus className={styles.plusIcon} />
                 </button>
                 

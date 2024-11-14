@@ -1,17 +1,35 @@
 .container{
     background-color: #4a3535;
-    height: 61px;
+    height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding-left: 20px;
+    justify-content: center;
+    padding: 10px 20px;
+    color: #888;
+    
+}
+.contact{
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
+.phoneNumber{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+    
+    
+}
 .text{
-    color: azure;
-    font-size: 18px;
-    font-weight: lighter;
-    font-style: italic;
     margin-top: 12px;
-    font-size: 15px;
+    font-size: 0.9rem;
+    color: #888;
+}
+.address{
+    display: block;
+    margin-bottom: 8px;
 }
