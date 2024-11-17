@@ -1,9 +1,22 @@
+"use client";
+import { useState, useEffect } from "react";
+
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import logo from "../../../../public/cafe 1.svg";
 import Link from "next/link";
 
 export default function Header() {
+  const [userName, setUserName] = useState("");
+
+  // Pega o nome do usuário do localStorage quando o componente é carregado
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
+
   return (
     <>
       <header className={styles.header}>
@@ -21,9 +34,13 @@ export default function Header() {
               <Link href="/">Home</Link>
               <Link href="/menu">Menu</Link>
               <Link href="/contatos">Contatos</Link>
-              <Link href="/login">Login</Link>
+              <Link href="/login">Entrar</Link>
+              <Link href="/newlogin">Inscreva-se</Link>
             </nav>
           </div>
+        </div>
+        <div className={styles.rightSection}>
+          <p>Bem-vindo (a)!</p>
         </div>
       </header>
     </>

@@ -14,12 +14,15 @@ interface Produto {
 
 export default function Menu() {
   const [data, setData] = useState<Produto[]>([]);
+  const [showMessage, setShowMessage] = useState(false); // Estado para exibir mensagem
 
   function handleAdd(product: string, price: number, quantity: number): void {
     const novoItem: Produto = { product, price, quantity };
     const updatedCart = [...data, novoItem];
     setData(updatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart)); // Salva o estado no localStorage
+    setShowMessage(true); // Exibe a mensagem
+    setTimeout(() => setShowMessage(false), 2000); // Esconde após 2 segundos
   }
 
   useEffect(() => {
@@ -60,6 +63,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Chocolate", 12, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -74,6 +78,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Morango", 10, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -88,6 +93,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Banana", 9, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -102,6 +108,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Maçã", 11, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -116,6 +123,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Nozes", 14, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -130,6 +138,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Abacaxi", 8, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -144,6 +153,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconlink}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Torta de Limão", 10, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -165,6 +175,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Expresso", 5, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -179,6 +190,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Cappuccino", 7, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -191,6 +203,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Afogato", 9, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -205,6 +218,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Café Macchiato", 6.5, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -219,6 +233,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Chocolate Quente", 8, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -231,6 +246,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Café Gelado", 6, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />
@@ -245,6 +261,7 @@ export default function Menu() {
                 </div>
                 <button
                   className={styles.iconCafe}
+                  title="Adicionado ao carrinho"
                   onClick={() => handleAdd("Leite Macchiato", 7.5, 1)}
                 >
                   <FiPlus className={styles.plusIcon} />

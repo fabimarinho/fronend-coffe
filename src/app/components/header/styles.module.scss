@@ -1,112 +1,93 @@
-.header{  
-    display: flex;
-    flex-direction: column; // organiza a cafeteria em cima
-    align-items: center;
-    background-color: #4A3535;
-    padding: 10px 20px;
-    
-
-    
-
+.header {
+  display: flex;
+  flex-direction: column; // organiza a cafeteria em cima
+  align-items: center;
+  background-color: #4a3535;
+  padding: 10px 20px;
 }
 
-.leftSection{
-    display: flex;
-    align-items: center;
-    gap:10px ;
-    width: 100%;
-    justify-content: space-between;
-
-   
-
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
 }
-.cafeteria{  // Esse é referente aonde esstá escrito "cafeteria"
-    display: flex;
-    width: 100%;
-   color: azure;
-   margin-left: 25px;
-   h1{
-       font-size: 45px;
-       font-weight: lighter;
-       text-align: center;
-       margin-bottom: 5px;
-       font-style: italic;
-       
-
-   }
-   
-  
-    
+.cafeteria {
+  // Esse é referente aonde esstá escrito "cafeteria"
+  display: flex;
+  width: 100%;
+  color: azure;
+  margin-left: 25px;
+  h1 {
+    font-size: 45px;
+    font-weight: lighter;
+    text-align: center;
+    margin-bottom: 5px;
+    font-style: italic;
+  }
 }
 
-.divlogo{
-    display: flex;
-    align-items: center;
+.divlogo {
+  display: flex;
+  align-items: center;
+  color: azure;
+  gap: 10px;
+  margin-left: 25px;
+  h1 {
+    font-weight: lighter;
+    text-align: center;
+    font-style: italic;
+    font-size: 45px;
+  }
+}
+.navLinks {
+  // Esse é referente ao home, menu e contatos
+  display: flex;
+  gap: 20px;
+  color: azure;
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-right: 10px;
+
+  a {
+    text-decoration: none;
     color: azure;
-    gap: 10px;
-    margin-left: 25px;
-    h1{
-        font-weight: lighter;
-        text-align: center;
-        font-style: italic;
-        font-size: 45px;
-    }
-}
-.navLinks{    // Esse é referente ao home, menu e contatos
-    display: flex;
-    gap: 20px;
-    color: azure;
-    font-size: 1rem;
-    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 0.3s ease;
     margin-right: 10px;
-    
-    a{
-        text-decoration: none;
-        color: azure;
-        font-weight: bold;
-        transition: color 0.3s ease;
-        margin-right: 10px;
 
-        &:hover{
-            color:#FFD700 ;
-        }
+    &:hover {
+      color: #ffd700;
     }
-
-
+  }
 }
-.iconsTag{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: azure;
-   
-
-
+.iconsTag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: azure;
 }
-.rightSection{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-content: flex-end;
+.rightSection {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1rem;
+  color: azure;
 }
 
-.socialIcons{
-    display: flex;
+.socialIcons {
+  display: flex;
 
-    a{
-        margin-right: 7px;  
-        transition: transform 0.3s ease, background-color 0.3s ease;
-        margin-right: 10px;
+  a {
+    margin-right: 7px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    margin-right: 10px;
 
-        &:hover{
-            transform: scale(1.1); 
-            border-radius: 50%;
-        }
-        
-      
-      
-        }
-    
- 
-    
+    &:hover {
+      transform: scale(1.1);
+      border-radius: 50%;
+    }
+  }
 }

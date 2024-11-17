@@ -48,20 +48,8 @@ export default function Login() {
             Acessar
           </button>
 
-          <div className={styles.orSeparator}>ou</div>
-
-          <button type="button" className={styles.googleButton}>
-            <Image
-              src={googleIcon}
-              alt="Ícone do google"
-              width={20}
-              height={20}
-            />
-            <span>Entrar com Google</span>
-          </button>
-
           <p className={styles.signupLink}>
-            Ainda não possui uma conta? <a href="/signup">Cadastre-se</a>
+            Ainda não possui uma conta? <a href="/newlogin">Cadastre-se</a>
           </p>
         </form>
       </div>

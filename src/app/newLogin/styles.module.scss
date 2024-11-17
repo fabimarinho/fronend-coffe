@@ -38,6 +38,8 @@
 
 .inputGroup {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 
   .inputGroup input {
     width: 100%;
@@ -59,9 +61,8 @@
   }
 
   label {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
     color: #0c0808;
     margin-bottom: 0.5rem;
 
@@ -69,16 +70,24 @@
       margin-right: 0.5rem;
     }
   }
+}
+.input {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
 
-  input {
-    width: 100%;
-    padding: 0.75rem 2.5rem 0.75rem 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    position: relative;
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+  }
+
+  &::placeholder {
+    color: #aaa;
   }
 }
+
 .passwordContainer {
   position: relative;
 }
@@ -117,33 +126,6 @@
   }
 }
 
-.orSeparator {
-  margin: 1rem 0;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.googleButton {
-  background-color: #4285f4;
-  color: azure;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #1e90ff;
-  }
-  img {
-    margin-right: 0.5rem;
-  }
-}
-
 .signupLink {
   font-size: 0.8rem;
   margin-top: 1rem;
@@ -155,6 +137,23 @@
 
     &:hover {
       transform: scale(1.1);
+    }
+  }
+}
+.addressGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  .fullWidth {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+
+    .fullWidth {
+      grid-column: span 1;
     }
   }
 }

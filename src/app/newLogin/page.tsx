@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation"; // Importando useRouter para redirecionamento
 import styles from "./styles.module.scss";
 import Image from "next/image";
-import googleIcon from "../../../public/devicon_google.svg";
 import backgroundImg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
 import eyeIcon from "../../../public/eye-svgrepo-com.svg";
 
@@ -18,11 +17,17 @@ export default function NewLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Mensagem de sucesso
+
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
-    birthDate: "",
-    gender: "",
+    street: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    postalCode: "",
   }); // Para limpar os campos após o envio
 
   // Função de validação
@@ -49,9 +54,16 @@ export default function NewLogin() {
       email === confirmEmail &&
       formData.fullName &&
       formData.phoneNumber &&
-      formData.birthDate &&
-      formData.gender
+      formData.street &&
+      formData.number &&
+      formData.neighborhood &&
+      formData.city &&
+      formData.state &&
+      formData.postalCode
     ) {
+      // Salvar o nome completo no localStorage
+      localStorage.setItem("userName", formData.fullName);
+
       // Se tudo estiver certo, exibe a mensagem de sucesso
       setSuccessMessage("Cadastro realizado com sucesso!");
 
@@ -60,8 +72,13 @@ export default function NewLogin() {
         setFormData({
           fullName: "",
           phoneNumber: "",
-          birthDate: "",
-          gender: "",
+          street: "",
+          number: "",
+          complement: "",
+          neighborhood: "",
+          city: "",
+          state: "",
+          postalCode: "",
         });
         setPassword("");
         setConfirmPassword("");
@@ -96,148 +113,224 @@ export default function NewLogin() {
         <h1>Novo Usuário</h1>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="fullName">
-              <span>👤</span> Digite seu nome completo
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Digite seu nome completo"
-              value={formData.fullName}
-              onChange={(e) => {
-                const uppercased = e.target.value.toUpperCase();
-                setFormData({ ...formData, fullName: uppercased });
-              }}
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="phoneNumber">
-              <span>📞</span> Digite seu número de telefone
-            </label>
-            <input
-              type="tel"
-              id="phoneNumber"
-              placeholder="Digite seu número de telefone"
-              value={formData.phoneNumber}
-              onChange={(e) => {
-                let value = e.target.value.replace(/\D/g, "");
-                if (value.length > 10) {
-                  value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-                } else if (value.length > 6) {
-                  value = value.replace(
-                    /(\d{2})(\d{4})(\d{0,4})/,
-                    "($1) $2-$3"
-                  );
-                } else if (value.length > 2) {
-                  value = value.replace(/(\d{2})(\d{0,5})/, "($1) $2");
-                }
-                setFormData({ ...formData, phoneNumber: value });
-              }}
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="birthDate">
-              <span>📅</span> Data de nascimento
-            </label>
-            <input
-              type="date"
-              id="birthDate"
-              value={formData.birthDate}
-              onChange={(e) =>
-                setFormData({ ...formData, birthDate: e.target.value })
-              }
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="gender">
-              <span>⚥</span> Sexo
-            </label>
-            <select
-              id="gender"
-              value={formData.gender}
-              onChange={(e) =>
-                setFormData({ ...formData, gender: e.target.value })
-              }
-              required
-            >
-              <option value="">Selecione seu sexo</option>
-              <option value="masculino">Masculino</option>
-              <option value="feminino">Feminino</option>
-              <option value="outro">Outro</option>
-              <option value="prefiro_nao_dizer">Prefiro não dizer</option>
-            </select>
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="email">
-              <span>📧</span> Digite seu email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Digite seu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="confirmEmail">
-              <span>📧</span> Confirme seu email
-            </label>
-            <input
-              type="email"
-              id="confirmEmail"
-              placeholder="Confirme seu email"
-              value={confirmEmail}
-              onChange={(e) => setConfirmEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          {emailError && <p className={styles.error}>{emailError}</p>}
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="password">
-              <span>🔒</span> Escolha uma senha
-            </label>
-            <div className={styles.passwordContainer}>
+          <div className={styles.section}>
+            <h2> Dados Pessoais</h2>
+            <div className={styles.inputGroup}>
+              <label htmlFor="fullName">
+                <span>👤</span> Digite seu nome completo
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="Escolha uma senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type="text"
+                id="fullName"
+                placeholder="Digite seu nome completo"
+                value={formData.fullName}
+                onChange={(e) => {
+                  const uppercased = e.target.value.toUpperCase();
+                  setFormData({ ...formData, fullName: uppercased });
+                }}
                 required
               />
-              <Image
-                src={eyeIcon}
-                alt="Ícone de olho"
-                width={24}
-                height={24}
-                className={styles.eyeIcon}
-                onClick={() => setShowPassword(!showPassword)} // Alternar visibilidade
+              <div className={styles.inputGroup}>
+                <label htmlFor="phoneNumber">
+                  <span>📞</span> Digite um número de telefone
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  placeholder="Digite seu número de telefone"
+                  value={formData.phoneNumber}
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, "");
+                    if (value.length > 10) {
+                      value = value.replace(
+                        /(\d{2})(\d{5})(\d{4})/,
+                        "($1) $2-$3"
+                      );
+                    } else if (value.length > 6) {
+                      value = value.replace(
+                        /(\d{2})(\d{4})(\d{0,4})/,
+                        "($1) $2-$3"
+                      );
+                    } else if (value.length > 2) {
+                      value = value.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+                    }
+                    setFormData({ ...formData, phoneNumber: value });
+                  }}
+                  required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label htmlFor="email">
+                  <span>📧</span> Digite seu email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Digite seu email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="confirmEmail">
+                  <span>📧</span> Confirme seu email
+                </label>
+                <input
+                  type="email"
+                  id="confirmEmail"
+                  placeholder="Confirme seu email"
+                  value={confirmEmail}
+                  onChange={(e) => setConfirmEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {emailError && <p className={styles.error}>{emailError}</p>}
+            </div>
+          </div>
+          {/*bloco 2 endereço */}
+          <div className={styles.section}>
+            <h2>Endereço de Entrega</h2>
+            <div className={styles.inputGroup}>
+              <label htmlFor="street">Rua</label>
+              <input
+                type="text"
+                id="street"
+                placeholder="Digite o nome da rua"
+                value={formData.street}
+                onChange={(e) =>
+                  setFormData({ ...formData, street: e.target.value })
+                }
+                required
               />
             </div>
           </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="number">Nº</label>
+            <input
+              type="text"
+              id="number"
+              placeholder="Número"
+              value={formData.number}
+              onChange={(e) =>
+                setFormData({ ...formData, number: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="neighborhood">Bairro</label>
+            <input
+              type="text"
+              id="neighborhood"
+              placeholder="Bairro"
+              value={formData.neighborhood}
+              onChange={(e) =>
+                setFormData({ ...formData, neighborhood: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="state">Estado</label>
+            <input
+              type="text"
+              id="state"
+              placeholder="Estado"
+              value={formData.state}
+              onChange={(e) =>
+                setFormData({ ...formData, state: e.target.value })
+              }
+              required
+            />
+          </div>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="confirmPassword">
-              <span>🔒</span> Confirma a senha
-            </label>
-            <div className={styles.passwordContainer}>
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                placeholder="Confirma a senha"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+            <label htmlFor="postalCode">CEP</label>
+            <input
+              type="text"
+              id="postalCode"
+              placeholder="CEP"
+              value={formData.postalCode}
+              onChange={(e) =>
+                setFormData({ ...formData, postalCode: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="city">Cidade</label>
+            <input
+              type="text"
+              id="city"
+              placeholder="Cidade"
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="complement">Complemento</label>
+            <input
+              type="text"
+              id="complement"
+              placeholder="Apartamento, bloco, etc. (opcional)"
+              value={formData.complement}
+              onChange={(e) =>
+                setFormData({ ...formData, complement: e.target.value })
+              }
+            />
+          </div>
+          {/*bloco 3 senha*/}
+          <div className={styles.section}>
+            <h2>Senha</h2>
+            <div className={styles.inputGroup}>
+              <label htmlFor="password">
+                <span>🔒</span> Digite uma senha...
+              </label>
+              <div className={styles.passwordContainer}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Escolha uma senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Image
+                  src={eyeIcon}
+                  alt="Ícone de olho"
+                  width={24}
+                  height={24}
+                  className={styles.eyeIcon}
+                  onClick={() => setShowPassword(!showPassword)} // Alternar visibilidade
+                />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="confirmPassword">
+                <span>🔒</span> Confirma a senha
+              </label>
+              <div className={styles.passwordContainer}>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  placeholder="Confirma a senha"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <p className={styles.passwordInfo}>
+                A senha deve conter pelo menos 1 número, 1 letra maiúscula, 1
+                letra minúscula e 1 caractere especial.
+              </p>
               <Image
                 src={eyeIcon}
                 alt="Ícone de olho"
@@ -254,19 +347,6 @@ export default function NewLogin() {
           <button type="submit" className={styles.signupButton}>
             Cadastrar
           </button>
-          <div className={styles.orSeparator}>ou</div>
-          <button type="button" className={styles.googleButton}>
-            <Image
-              src={googleIcon}
-              alt="Ícone do Google"
-              width={20}
-              height={20}
-            />
-            Entrar com Google
-          </button>
-          <p className={styles.signupLink}>
-            Ainda não possui uma conta? <a href="/signup">Cadastre-se</a>
-          </p>
         </form>
 
         {successMessage && (
