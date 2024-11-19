@@ -9,6 +9,16 @@
   position: relative;
   color: #fff;
 }
+.imgcoffee{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.9; 
+}
 
 .imageContainer {
   position: absolute;

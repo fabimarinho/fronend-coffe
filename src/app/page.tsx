@@ -50,39 +50,59 @@ export default function Page() {
           quality={100}
           priority={true}
         />
-        <h1 className={styles.text}>
-          "Preparando
-          <br /> seu café com <br />
-          amor em cada <br />
-          xicará"
-        </h1>
-        {/* Texto Aconchegante e Convidativo */}
-        <p className={styles.subText}>
-          Sinta o aroma e descubra o sabor único que preparamos para você.
-        </p>
+        <div className={styles.offers}>
 
-        {/* Carrossel de Produtos */}
-        <div className={styles.carousel}>
-          <div className={styles.carouselItem}>
-            <h2>Torta de Chocolate</h2>
-            <p>Deliciosa torta com recheio cremoso e cobertura irresistível.</p>
+          <div>
+            <h1 className={styles.text}>
+              "Preparando
+              <br /> seu café com <br />
+              amor em cada <br />
+              xicará"
+            </h1>
+            {/* Texto Aconchegante e Convidativo */}
+            <p className={styles.subText}>
+              Sinta o aroma e descubra o sabor único que preparamos para você.
+            </p>
+
           </div>
-          <div className={styles.carouselItem}>
-            <h2>Torta de Morango</h2>
-            <p>Fresca, leve e feita com os melhores morangos.</p>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>Café Gelado</h2>
-            <p>Perfeito para dias quentes. Sabor e frescor em cada gole.</p>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>Cappuccino</h2>
-            <p>Cremoso e com o equilíbrio perfeito de café e leite.</p>
+
+          {/* Carrossel de Produtos */}
+          <div>
+            <div className={styles.carousel}>
+              <div className={styles.divProdHome}>
+                <div className={styles.carouselItem}>
+                  <h2>Torta de Chocolate</h2>
+                  <p>Deliciosa torta com recheio cremoso e cobertura irresistível.</p>
+                </div>
+                <div className={styles.carouselItem}>
+                  <h2>Torta de Morango</h2>
+                  <p>Fresca, leve e feita com os melhores morangos.</p>
+                </div>
+
+              </div>
+              <div className={styles.divProdHome}>
+                <div className={styles.carouselItem}>
+                  <h2>Café Gelado</h2>
+                  <p>Perfeito para dias quentes. Sabor e frescor em cada gole.</p>
+                </div>
+                <div className={styles.carouselItem}>
+                  <h2>Cappuccino</h2>
+                  <p>Cremoso e com o equilíbrio perfeito de café e leite.</p>
+                </div>
+
+              </div>
+              
+            </div>
+            <div className={styles.btn}>
+              <Link href="/menu" className={styles.ctaButton}>
+              Explore Nosso Cardápio
+              </Link>
+            </div>
           </div>
         </div>
         {/* Testemunhos de Clientes */}
+          <h2 className={styles.h2Comentarios}>O que nossos clientes dizem:</h2>
         <section className={styles.testimonials}>
-          <h2>O que nossos clientes dizem:</h2>
           <div className={styles.testimonialList}>
             <div className={styles.testimonialItem}>
               <p>
@@ -134,9 +154,7 @@ export default function Page() {
           Home
         </Link>
 
-        <Link href="/menu" className={styles.ctaButton}>
-          Explore Nosso Cardápio
-        </Link>
+       
       </div>
     </main>
   );

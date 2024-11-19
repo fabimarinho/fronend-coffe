@@ -2,12 +2,14 @@ import styles from "./styles.module.scss";
 import imgbg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
 import googleIcon from "../../../public/devicon_google.svg";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Login() {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.imageContainer}>
         <Image
+         className={styles.imgcoffee}
           src={imgbg}
           alt="Imagem de fundo"
           objectFit="cover"
@@ -49,7 +51,7 @@ export default function Login() {
           </button>
 
           <p className={styles.signupLink}>
-            Ainda não possui uma conta? <a href="/newlogin">Cadastre-se</a>
+            Ainda não possui uma conta? <Link href="/newLogin">Cadastre-se</Link>
           </p>
         </form>
       </div>

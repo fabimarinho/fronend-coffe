@@ -22,6 +22,9 @@ export default function Header() {
       <header className={styles.header}>
         <div className={styles.cafeteria}>
           <h1>Cafeteria</h1>
+          
+           <p>Bem-vindo (a)! "Nome do clinte"</p>
+          
         </div>
 
         <div className={styles.leftSection}>
@@ -35,13 +38,11 @@ export default function Header() {
               <Link href="/menu">Menu</Link>
               <Link href="/contatos">Contatos</Link>
               <Link href="/login">Entrar</Link>
-              <Link href="/newlogin">Inscreva-se</Link>
+              <Link href="/newLogin">Inscreva-se</Link>
             </nav>
           </div>
         </div>
-        <div className={styles.rightSection}>
-          <p>Bem-vindo (a)!</p>
-        </div>
+       
       </header>
     </>
   );

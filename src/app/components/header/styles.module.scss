@@ -19,6 +19,10 @@
   width: 100%;
   color: azure;
   margin-left: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 30px;
   h1 {
     font-size: 45px;
     font-weight: lighter;
