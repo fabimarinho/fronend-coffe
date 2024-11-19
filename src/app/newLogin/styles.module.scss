@@ -1,10 +1,50 @@
 .loginContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
   position: relative;
-  background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    overflow: hidden;
+    min-height: 100vh;
+}
+.imgcoffee{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.9; 
+}
+
+.divAlign{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+ // background-color: red;
+ margin-top: 10px;
+
+  input{
+    width: 100%;
+    height: 30px;
+
+    &::placeholder{
+      color: #a09e9ee0;
+    }
+  }
+  h5{
+    color: #fff;
+  }
+  label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+  }
 }
 .imageContainer {
   position: absolute;
@@ -35,19 +75,112 @@
   display: flex;
   flex-direction: column;
 }
+.section{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5px;
+}
+.inputGroupStreet{
+  width: 80%;
+  input{
+    width: 90%;
+  }
+}
+.inputGroupNumber{
+  width: 20%;
+  input{
+    width: 80%;
+  }
+}
+.divCountry{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
 
+}
+.inputGroupCity{
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  input{
+    width: 80%;
+  }
+}
+.inputGroupTown{
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  input{
+    width: 80%;
+  }
+}
+
+.divStateCEP{
+//background-color: red;
+display: flex;
+flex-direction: row;
+margin-top: 10px;
+}
+.inputGroupState{
+
+}
+.inputGroupCEP{
+  input{
+    &::placeholder{
+     color: #aaaaaada;
+    }
+
+  }
+}
+
+.inputGroupComplement{
+  width: 100%;
+  //background-color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+
+  textarea{
+    width: 100%;
+    height: 60px;
+    padding-left: 3px;
+    &::placeholder{
+      padding-left: 3px;
+    }
+  }
+}
+
+.DivPassword{
+ // background-color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.inputGroupPass{
+  width: 45%;
+ // background-color:green;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.inputGroupRepeatPass{
+  width: 45%;
+  //background-color:green;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .inputGroup {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
 
-  .inputGroup input {
-    width: 100%;
-    padding: 0.75rem;
-    padding-right: 2rem; /* Espaço para o ícone */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
+
 
   .inputGroup button {
     position: absolute;
@@ -71,42 +204,38 @@
     }
   }
 }
-.input {
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
 
-  &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
-}
 
 .passwordContainer {
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+ // background-color: red;
+
+ input{
+  padding-left: 5px;
+  &::placeholder{
+    padding-left: 2px;
+    
+  }
+ }
 }
 
-.input {
-  padding-right: 2.5rem;
-}
+
 
 .eyeIcon {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
+ /// position: relative;
+ // top: 50%;
+ // right: 10px;
+ //background-color: #00c853;
+ // transform: translateY(-50%);
+ margin-left: 3px;
   cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
+  color: #aaa;
 
   &:hover {
-    opacity: 1;
+    color: #aaaaaab7;
   }
 }
 
