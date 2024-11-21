@@ -1,284 +1,282 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "./styles.module.scss";
-import Link from "next/link";
+
 import Image from "next/image";
 import coffeimg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
 import { FiPlus } from "react-icons/fi";
+import { useRouter } from "next/router";
 
-interface Produto {
-  product: string;
-  price: number;
-  quantity: number;
-}
+const Menu = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [showMessage, setShowMessage] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("");
+  const router = useRouter(); // Importação do roteamento
 
-export default function Menu() {
-  const [data, setData] = useState<Produto[]>([]);
-  const [showMessage, setShowMessage] = useState(false); // Estado para exibir mensagem
+  const handleCartClick = () => {
+    router.push("/carrinho"); // Redireciona para a página do carrinho
+  };
 
-  function handleAdd(product: string, price: number, quantity: number): void {
-    const novoItem: Produto = { product, price, quantity };
-    const updatedCart = [...data, novoItem];
-    setData(updatedCart);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart)); // Salva o estado no localStorage
-    setShowMessage(true); // Exibe a mensagem
-    setTimeout(() => setShowMessage(false), 2000); // Esconde após 2 segundos
-  }
+  const Menu = () => {
+    const [data, setData] = useState<any[]>([]); // Cart data
+    const [showMessage, setShowMessage] = useState(false); // Show message when adding to cart
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filter, setFilter] = useState("");
+    const [products] = useState([
+      {
+        id: 1,
+        name: "Café Premium",
+        category: "Bebidas",
+        price: 15.0,
+        description: "Um café com aroma intenso e sabor marcante.",
+      },
+      {
+        id: 2,
+        name: "Torta de Morango",
+        category: "Doces",
+        price: 12.0,
+        description: "Deliciosa torta feita com morangos frescos.",
+      },
+      {
+        id: 3,
+        name: "Expresso",
+        category: "Bebidas",
+        price: 15.0,
+        description: "Um café com sabor inesquecível.",
+      },
+      {
+        id: 4,
+        name: "Torta de chocolate",
+        category: "Doces",
+        price: 12.5,
+        description: "Fatia de torta de chocolate grego, com chantilly",
+      },
+      {
+        id: 5,
+        name: "Capuccino",
+        category: "Bebidas",
+        price: 7.0,
+        description: "Expresso com leite vaporizado.",
+      },
+      {
+        id: 6,
+        name: "Torta de banana",
+        category: "Doces",
+        price: 9.0,
+        description: "Fatia de torta de banana com canela",
+      },
+      {
+        id: 7,
+        name: "Afogato",
+        category: "Bebidas",
+        price: 9.0,
+        description: "Expresso com sorvete.",
+      },
+      {
+        id: 8,
+        name: "Torta de maçã",
+        category: "Doces",
+        price: 11.0,
+        description: "Fatia de torta de maçã do nordeste brasileiro.",
+      },
+      {
+        id: 9,
+        name: "Café Macchiato",
+        category: "Bebidas",
+        price: 6.5,
+        description: "Café manchado com leite vaporizado.",
+      },
+      {
+        id: 10,
+        name: "Torta de nozes",
+        category: "Doces",
+        price: 14.0,
+        description: "Fatia de torta com nozes americanas",
+      },
+      {
+        id: 11,
+        name: "Chocolate quente",
+        category: "Bebidas",
+        price: 8.0,
+        description: "Leite vaporizado com manchas de chocolate.",
+      },
+      {
+        id: 12,
+        name: "Torta de nozes",
+        category: "Doces",
+        price: 14.0,
+        description: "Fatia de torta com nozes americanas",
+      },
+      {
+        id: 13,
+        name: "Café gelado",
+        category: "Bebidas",
+        price: 6.0,
+        description: "Frappe de café.",
+      },
+      {
+        id: 14,
+        name: "Torta de abacaxi",
+        category: "Doces",
+        price: 8.0,
+        description: "Fatia com torta de abacaxi caramelizado.",
+      },
+      {
+        id: 15,
+        name: "Leite macchiado",
+        category: "Bebidas",
+        price: 7.5,
+        description: "Leite vaporizado, manchado com café.",
+      },
+      {
+        id: 16,
+        name: "Torta de especial",
+        category: "Doces",
+        price: 14.5,
+        description: "Fatia de torta americana, com calda de cholocate",
+      },
+    ]);
 
-  useEffect(() => {
-    // Carrega o estado inicial do carrinho do localStorage
-    const savedCart = localStorage.getItem("cartItems");
-    if (savedCart) {
-      setData(JSON.parse(savedCart));
-    }
-  }, []);
-  return (
-    <div className={styles.menuPage}>
-      <h1>
-        "Sinta o sabor da felicidade em cada gole de café e em cada fatia de
-        torta"{" "}
-      </h1>
-      <h2> Uma combinação que vai deixar seu dia ainda mais doce!</h2>
-      <Image
-        className={styles.imgcoffee}
-        src={coffeimg}
-        alt="Imagem de fundo"
-        objectFit="cover"
-        quality={100}
-        priority={true}
-      />
-      <div className={styles.content}>
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    };
+
+    const handleAdd = (product: string, price: number, quantity: number) => {
+      const existingItemIndex = data.findIndex(
+        (item) => item.product === product
+      );
+      let updatedCart;
+      if (existingItemIndex >= 0) {
+        updatedCart = data.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      } else {
+        const novoItem = { product, price, quantity };
+        updatedCart = [...data, novoItem];
+      }
+
+      setData(updatedCart);
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 2000);
+    };
+
+    useEffect(() => {
+      const savedCart = localStorage.getItem("cartItems");
+      if (savedCart) {
+        setData(JSON.parse(savedCart));
+      }
+    }, []);
+
+    const filteredProducts = products.filter((product) => {
+      if (filter === "preco") {
+        return product.price <= 20;
+      }
+      if (filter === "categoria") {
+        return product.category
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      }
+      return product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    return (
+      <div className={styles.menuPage}>
+        {showMessage && (
+          <div className={styles.toast}>Item adicionado ao carrinho!</div>
+        )}
+        <h1>
+          "Sinta o sabor da felicidade em cada gole de café e em cada fatia de
+          torta"
+        </h1>
+        <h2>Uma combinação que vai deixar seu dia ainda mais doce!</h2>
+        <Image
+          className={styles.imgcoffee}
+          src={coffeimg}
+          alt="Imagem de fundo"
+          objectFit="cover"
+          quality={100}
+          priority={true}
+        />
+
+        <div className={styles.filterSection}>
+          <input
+            type="text"
+            placeholder="Buscar produtos..."
+            className={styles.searchInput}
+            onChange={handleSearch}
+          />
+          <button
+            onClick={() => setFilter("preco")}
+            className={styles.filterButton}
+          >
+            Filtrar por Preço
+          </button>
+          <button
+            onClick={() => setFilter("categoria")}
+            className={styles.filterButton}
+          >
+            Filtrar por Categoria
+          </button>
+        </div>
+
         <div className={styles.menuContainer}>
-          {/*Retângulo para Nossas tortas*/}
-
           <div className={styles.transparentRectangle}>
             <h2>Nossas Tortas</h2>
             <ul>
-              <li>
-                <div>
-                  <strong>Torta de Chocolate - R$ 12,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de chocolate grego, com chantilly.
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Chocolate", 12, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Morango - R$ 10,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de morango silvestre
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Morango", 10, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Banana - R$ 9,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de banana com canela
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Banana", 9, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Maçã - R$ 11,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de maçã do nordeste brasileiro
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Maçã", 11, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Nozes - R$ 14,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de nozes americanas
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Nozes", 14, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Abacaxi - R$ 8,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta de abacaxi caramelizado
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Abacaxi", 8, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Torta de Limão - R$ 10,00</strong>
-                  <p className={styles.descricao}>
-                    - Fatia de torta limãocom cobertura de chocolate branco
-                  </p>
-                </div>
-                <button
-                  className={styles.iconlink}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Torta de Limão", 10, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
+              {filteredProducts
+                .filter((product) => product.category === "Doces")
+                .map((product) => (
+                  <li key={product.id}>
+                    <div>
+                      <strong>
+                        {product.name} - R$ {product.price}
+                      </strong>
+                      <p className={styles.descricao}>{product.description}</p>
+                    </div>
+                    <button
+                      className={styles.iconlink}
+                      title="Adicionado ao carrinho"
+                      onClick={() => handleAdd(product.name, product.price, 1)}
+                    >
+                      <FiPlus className={styles.plusIcon} />
+                    </button>
+                  </li>
+                ))}
             </ul>
           </div>
 
-          {/* Nossos Cafés */}
           <div className={styles.roundedRectangle}>
             <h2>Nossos Cafés</h2>
             <ul>
-              <li>
-                <div>
-                  <strong>Expresso - R$ 5,00</strong>
-                  <p className={styles.descriCafe}>
-                    - Grãos cuidadosamente selecionados
-                  </p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Expresso", 5, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Cappuccino - R$ 7,00</strong>
-                  <p className={styles.descriCafe}>
-                    - Expresso com leite vaporizado
-                  </p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Cappuccino", 7, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Afogato - R$ 9,00</strong>
-                  <p className={styles.descriCafe}>- Expresso com sorvete</p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Afogato", 9, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Café Macchiato - R$ 6,50</strong>
-                  <p className={styles.descriCafe}>
-                    - Café manchado com leite vaporizado
-                  </p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Café Macchiato", 6.5, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Chocolate Quente - R$ 8,00</strong>
-                  <p className={styles.descriCafe}>
-                    - Leite vaporizado com manchas de chocolate
-                  </p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Chocolate Quente", 8, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Café Gelado - R$ 6,00</strong>
-                  <p className={styles.descriCafe}>- Frappe de café</p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Café Gelado", 6, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
-              <li>
-                <div>
-                  <strong>Leite Macchiado - R$ 7,50</strong>
-                  <p className={styles.descriCafe}>
-                    - Leite vaporizado, manchado com café
-                  </p>
-                </div>
-                <button
-                  className={styles.iconCafe}
-                  title="Adicionado ao carrinho"
-                  onClick={() => handleAdd("Leite Macchiato", 7.5, 1)}
-                >
-                  <FiPlus className={styles.plusIcon} />
-                </button>
-              </li>
+              {filteredProducts
+                .filter((product) => product.category === "Bebidas")
+                .map((product) => (
+                  <li key={product.id}>
+                    <div>
+                      <strong>
+                        {product.name} - R$ {product.price}
+                      </strong>
+                      <p className={styles.descriCafe}>{product.description}</p>
+                    </div>
+                    <button
+                      className={styles.iconCafe}
+                      title="Adicionado ao carrinho"
+                      onClick={() => handleAdd(product.name, product.price, 1)}
+                    >
+                      <FiPlus className={styles.plusIcon} />
+                    </button>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
-
-        {/* Carrinho */}
-        <div className={styles.cart}>
-          <Link href="/carrinho" className={styles.cartButton}>
-            Visualizar no carrinho <span className={styles.cartIcon}>🛒</span>
-          </Link>
-          <p> "OBS: Todas as bebidas têm o mesmo tamanho de 200ml"</p>
-        </div>
       </div>
-    </div>
-  );
-}
+    );
+  };
+};
+
+export default Menu;

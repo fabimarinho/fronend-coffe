@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation"; // Importando useRouter para redire
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import backgroundImg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
-import eyeIcon from "../../../public/eye-svgrepo-com.svg";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function NewLogin() {
   const router = useRouter(); // Hook de navegação
@@ -89,14 +88,15 @@ export default function NewLogin() {
         setConfirmPassword("");
         setEmail("");
         setConfirmEmail("");
-        setSuccessMessage("");
 
-        // Redirecionando para a página de login
-        router.push("/login");
-      }, 3000); // Limpa e redireciona após 3 segundos
+        //após 3 segundos, redireciona para a página de login
+        setTimeout(() => {
+          setSuccessMessage("");
+          router.push("/login");
+        }, 3000);
+      }, 3000); // <-- Aqui estava o problema, faltava o fechamento deste bloco
     }
   };
-
   // Função para garantir que a entrada de texto seja convertida para maiúsculas
   const handleUppercase = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.toUpperCase();
@@ -106,7 +106,7 @@ export default function NewLogin() {
     <div className={styles.loginContainer}>
       <div className={styles.imageContainer}>
         <Image
-         className={styles.imgcoffee}
+          className={styles.imgcoffee}
           src={backgroundImg}
           alt="Imagem de fundo"
           objectFit="cover"
@@ -123,21 +123,20 @@ export default function NewLogin() {
             <h2> Dados Pessoais</h2>
             <div className={styles.inputGroup}>
               <div className={styles.divAlign}>
-              <label htmlFor="fullName">
-                <span>👤</span> <h5>Digite seu nome completo</h5>
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                placeholder="Digite seu nome completo"
-                value={formData.fullName}
-                onChange={(e) => {
-                  const uppercased = e.target.value.toUpperCase();
-                  setFormData({ ...formData, fullName: uppercased });
-                }}
-                required
-              />
-
+                <label htmlFor="fullName">
+                  <span>👤</span> <h5>Digite seu nome completo</h5>
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  placeholder="Digite seu nome completo"
+                  value={formData.fullName}
+                  onChange={(e) => {
+                    const uppercased = e.target.value.toUpperCase();
+                    setFormData({ ...formData, fullName: uppercased });
+                  }}
+                  required
+                />
               </div>
               <div className={styles.divAlign}>
                 <label htmlFor="phoneNumber">
@@ -200,7 +199,7 @@ export default function NewLogin() {
             </div>
           </div>
           {/*bloco 2 endereço */}
-            <h2>Endereço de Entrega</h2>
+          <h2>Endereço de Entrega</h2>
           <div className={styles.section}>
             <div className={styles.inputGroupStreet}>
               <label htmlFor="street">Rua: </label>
@@ -215,19 +214,18 @@ export default function NewLogin() {
                 required
               />
             </div>
-          <div className={styles.inputGroupNumber}>
-            <label htmlFor="number">Nº</label>
-            <input
-              type="text"
-              id="number"
-            
-              value={formData.number}
-              onChange={(e) =>
-                setFormData({ ...formData, number: e.target.value })
-              }
-              required
-            />
-          </div>
+            <div className={styles.inputGroupNumber}>
+              <label htmlFor="number">Nº</label>
+              <input
+                type="text"
+                id="number"
+                value={formData.number}
+                onChange={(e) =>
+                  setFormData({ ...formData, number: e.target.value })
+                }
+                required
+              />
+            </div>
           </div>
 
           <div className={styles.divCountry}>
@@ -257,7 +255,6 @@ export default function NewLogin() {
                 required
               />
             </div>
-
           </div>
 
           <div className={styles.divStateCEP}>
@@ -288,13 +285,11 @@ export default function NewLogin() {
                 required
               />
             </div>
-
           </div>
 
-       
           <div className={styles.inputGroupComplement}>
             <label htmlFor="complement">Complemento</label>
-        
+
             <textarea
               placeholder="Apartamento, bloco, etc. (opcional)"
               value={formData.complement}
@@ -305,7 +300,6 @@ export default function NewLogin() {
           </div>
           {/*bloco 3 senha*/}
           <div className={styles.DivPassword}>
-           
             <div className={styles.inputGroupPass}>
               <label htmlFor="password">
                 <span>🔒</span> Digite uma senha
@@ -319,16 +313,18 @@ export default function NewLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <span onClick={togglePasswordVisibility} className={styles.eyeIcon}>
-                   {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Ícone que alterna */}
+                <span
+                  onClick={togglePasswordVisibility}
+                  className={styles.eyeIcon}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+                  {/* Ícone que alterna */}
                 </span>
               </div>
             </div>
 
             <div className={styles.inputGroupRepeatPass}>
-              <label htmlFor="confirmPassword">
-                 Confirma a senha
-              </label>
+              <label htmlFor="confirmPassword">Confirma a senha</label>
               <div className={styles.passwordContainer}>
                 <input
                   type={showConfirmPassword ? "text" : "password"}
@@ -338,17 +334,20 @@ export default function NewLogin() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-                    <span onClick={togglePasswordVisibility} className={styles.eyeIcon}>
-                     {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Ícone que alterna */}
-                    </span>
+                <span
+                  onClick={togglePasswordVisibility}
+                  className={styles.eyeIcon}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+                  {/* Ícone que alterna */}
+                </span>
               </div>
-         
             </div>
           </div>
-              <p className={styles.passwordInfo}>
-                A senha deve conter pelo menos 1 número, 1 letra maiúscula, 1
-                letra minúscula e 1 caractere especial.
-              </p>
+          <p className={styles.passwordInfo}>
+            A senha deve conter pelo menos 1 número, 1 letra maiúscula, 1 letra
+            minúscula e 1 caractere especial.
+          </p>
 
           {passwordError && <p className={styles.error}>{passwordError}</p>}
 
