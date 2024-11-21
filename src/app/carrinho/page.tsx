@@ -58,36 +58,37 @@ export default function Carrinho() {
       </header>
 
       <div className={style.cartItems}>
-      {cartItems.length === 0 ? (
-    <p className={style.emptyCart}>
-      Seu carrinho está vazio. Que tal adicionar algo delicioso?
-    </p>): (
-
-
-        <div className={style.cartHeader}>
-          <span>Produto</span>
-          <span>Quantidade</span>
-          <span>Preço Unitário</span>
-          <span className={style.totaly}>Total</span>
-          <span className={style.trashOut}>Excluir Item</span>
-        </div>
-{cartItems?.map((item: any, index: number) => (
-  <div key={index} className={style.cartItem}>
-    <span className={style.spanProduto}>{item.product}</span>
-    <span className={style.quantity}>{item.quantity}</span>
-    <span className={style.price}>R$ {item.price.toFixed(2)}</span>
-    <span className={style.sub}>
-      R$ {(item.quantity * item.price).toFixed(2)}
-    </span>
-    <span
-      className={style.removeIcon}
-      onClick={() => handleRemoveItem(index)}
-    >
-      
-              <FaTrash />
-            </span>
-          </div>
-        ))}
+        {cartItems.length === 0 ? (
+          <p className={style.emptyCart}>
+            Seu carrinho está vazio. Que tal adicionar algo delicioso?
+          </p>
+        ) : (
+          <>
+            <div className={style.cartHeader}>
+              <span>Produto</span>
+              <span>Quantidade</span>
+              <span>Preço Unitário</span>
+              <span className={style.totaly}>Total</span>
+              <span className={style.trashOut}>Excluir Item</span>
+            </div>
+            {cartItems?.map((item: any, index: number) => (
+              <div key={index} className={style.cartItem}>
+                <span className={style.spanProduto}>{item.product}</span>
+                <span className={style.quantity}>{item.quantity}</span>
+                <span className={style.price}>R$ {item.price.toFixed(2)}</span>
+                <span className={style.sub}>
+                  R$ {(item.quantity * item.price).toFixed(2)}
+                </span>
+                <span
+                  className={style.removeIcon}
+                  onClick={() => handleRemoveItem(index)}
+                >
+                  <FaTrash />
+                </span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       <div className={style.cartSummary}>
@@ -103,11 +104,12 @@ export default function Carrinho() {
         <button className={style.buttonRed} onClick={handleChooseMoreProducts}>
           Escolher mais produtos
         </button>
-        <button className={style.buttonGreen} 
-        onClick={irParaPagamento}
-        disabled={cartItems.length === 0}> Finalizar compra
-          
-         
+        <button
+          className={style.buttonGreen}
+          onClick={irParaPagamento}
+          disabled={cartItems.length === 0}
+        >
+          Finalizar compra
         </button>
       </div>
     </div>
