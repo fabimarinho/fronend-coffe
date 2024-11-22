@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { QRCode } from "qrcode.react";
+import { useQRCode } from "next-qrcode";
 import Image from "next/image";
 import styles from "./styles.module.scss";
 import pixIcon from "../../../public/ic_round-pix.svg";
@@ -20,6 +20,7 @@ type CartItem = {
 };
 
 export default function Pagamento() {
+  const {Image: QRCodeImage} = useQRCode();
   const [cupom, setCupom] = useState("");
   const [parcelas, setParcelas] = useState(1);
   const [cartItems, setCartItems] = useState<Array<CartItem>>([]);
@@ -28,8 +29,7 @@ export default function Pagamento() {
   );
   const [showQRCode, setShowQRCode] = useState(false);
   const [qrValue, setQrValue] = useState("");
-  const [isPurchaseConfirmed, setIsPurchaseConfirmed] = useState(false); // Novo estado para controlar a confirmação do pedido
-  const isFirstPurchase = true;
+  const [isPurchaseConfirmed, setIsPurchaseConfirmed] = useState(false);
   const router = useRouter();
 
   // Carregar dados do localStorage ao montar o componente
@@ -50,7 +50,7 @@ export default function Pagamento() {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const desconto = isFirstPurchase ? subtotal * 0.1 : 0;
+  const desconto = subtotal * 0.1; // Desconto fixo de 10% para a primeira compra
   const totalSemJuros = subtotal - desconto;
   const juros = parcelas > 3 ? totalSemJuros * 0.03 : 0;
   const totalFinal = totalSemJuros + juros;
@@ -159,26 +159,32 @@ export default function Pagamento() {
       {/* Opções de pagamento */}
       <div className={styles.payment}>
         <h2 className={styles.paymentTitle}>Método de pagamento</h2>
-        <div
-          className={styles.paymentOption}
-          onClick={handlePixClick} // Evento para exibir o QR Code
-        >
+        <div className={styles.paymentOption} onClick={handlePixClick}>
           <Image src={pixIcon} alt="Pix" className={styles.icon} />
           <span>Pix</span>
         </div>
         <div className={styles.paymentOption}>
-          <Image
-            src={cardIcon}
-            alt="Cartão de crédito"
-            className={styles.icon}
-          />
+          <Image src={cardIcon} alt="Cartão de crédito" className={styles.icon} />
           <span>Cartão de crédito</span>
         </div>
 
         {/* Exibição do QR Code */}
         {showQRCode && (
           <div className={styles.qrCodeContainer}>
-            <QRCode value={qrValue} size={256} /> {/* Exibe o QR Code */}
+            <QRCodeImage
+              text={qrValue}
+              options={{
+                type: "image/png",
+                quality: 1,
+                errorCorrectionLevel: "M",
+                margin: 3,
+                scale: 4,
+                color: {
+                  dark: "#000000",
+                  light: "#FFFFFF",
+                },
+              }}
+            />
             <button className={styles.copyButton} onClick={handleCopyQRCode}>
               Copiar Código
             </button>

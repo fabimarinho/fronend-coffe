@@ -14,12 +14,12 @@ export default function Page(){
     quality={100}
     priority={true}
     />
-<h1 className={styles.contatoTitle}>Contato</h1>
+<h1 className={styles.contatoTitle}>Feedback</h1>
 
 <div className={styles.content}>
           
           <div className={styles.rightSection}>
-          <h2 className={styles.question}>Como podemos<br/> transformar sua <br/>pausa em um <br/>momento <br/>inesquecível?</h2>
+          <h2 className={styles.question}>Sua opnião é muito importante<br/> para nós!<br/>Por favor,<br/>compartilhe sua experiência e sugestões.</h2>
 
             
             <form className={styles.form}>
@@ -27,29 +27,56 @@ export default function Page(){
               <input
                 className={styles.input}
                 type="text"
-                placeholder="Digite seu nome"
+                placeholder="Digite seu nome..."
               />
               <input
                 className={styles.input}
                 type="email"
-                placeholder="Digite seu email"
+                placeholder="Digite seu email..."
               />
               <textarea
                 className={styles.textarea}
-                placeholder="Digite sua mensagem"
+                placeholder="Digite sua mensagem..."
               />
+              <div className={styles.ratingSection}>
+  <label className={styles.ratingLabel}>Avaliação:</label>
+  <div className={styles.stars}>
+    <input type="radio" id="star5" name="rating" value="5" />
+    <label htmlFor="star5" className={styles.star}>★</label>
+    <input type="radio" id="star4" name="rating" value="4" />
+    <label htmlFor="star4" className={styles.star}>★</label>
+    <input type="radio" id="star3" name="rating" value="3" />
+    <label htmlFor="star3" className={styles.star}>★</label>
+    <input type="radio" id="star2" name="rating" value="2" />
+    <label htmlFor="star2" className={styles.star}>★</label>
+    <input type="radio" id="star1" name="rating" value="1" />
+    <label htmlFor="star1" className={styles.star}>★</label>
+  </div>
+</div>
+<textarea
+    className={styles.textarea}
+    placeholder="Conte-nos sobre sua experiência ou sugerir melhorias"
+  />
             
             </form>
           </div>
         </div>
               <div className={styles.leftSection}>
               <p className={styles.subText}>
-              Entre em contato e nos deixe saber sua opinião sobre nossos <br/>serviços.
+              como foi sua experiência com nossos produtos e serviços? <br/>serviços.
             </p>
               <button type="submit" className={styles.submitButton}>
-                Enviar
+                Enviar Feedback
               </button>
+              <textarea
+  className={styles.textarea}
+  placeholder="Tem alguma sugestão para melhorar nosso serviço?"
+/>
            </div>
+           <div className={styles.thankYouMessage}>
+  <h3>Obrigado pelo seu Feedback!</h3>
+  <p>Valorizamos muito sua opinião e vamos usá-la para melhorar continuamente nossos serviços.</p>
+</div>
       </div>
     </main>
   );
