@@ -1,35 +1,45 @@
-.container{
-    background-color: #4a3535;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    color: #888;
-    
+.container {
+  background-color: #4a3535;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  color: #888;
 }
-.contact{
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+.contact {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
-.phoneNumber{
-    display: flex;
+.phoneNumber {
+  display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
-    
-    
 }
-.text{
-    margin-top: 12px;
-    font-size: 0.9rem;
-    color: #888;
+.text {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #888;
 }
-.address{
-    display: block;
-    margin-bottom: 8px;
+.address {
+  display: block;
+  margin-bottom: 8px;
+}
+.emailAddress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.emailAddress a {
+  color: #888; /* Altere para a cor que desejar */
+}
+
+.emailAddress a:hover {
+  color: #e4c0a8; /* Cor ao passar o mouse (opcional) */
 }

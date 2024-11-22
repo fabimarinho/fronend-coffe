@@ -8,13 +8,14 @@ import Link from "next/link";
 
 export default function Header() {
   const [userName, setUserName] = useState("");
-  const router = useRouter(); // Hook para redirecinar
+  const router = useRouter(); // Hook para redirecionar
 
   // Pega o nome do usuário do localStorage quando o componente é carregado
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     if (storedName) {
-      setUserName(storedName);
+      const firstName = storedName.split(" ")[0]; // Pega apenas o primeiro nome
+      setUserName(firstName); // Pega apenas o primeiro nome do cliente
     } else {
       router.push("/login"); // Caso o usuário não esteja logado, ele será redirecionado para a pagina de login
     }

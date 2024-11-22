@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { QRCode } from "qrcode.react";
 import Image from "next/image";
 import styles from "./styles.module.scss";
 import pixIcon from "../../../public/ic_round-pix.svg";
@@ -11,33 +13,95 @@ import masterIcon from "../../../public/logos_mastercard.svg";
 import visaIcon from "../../../public/logos_visaelectron.svg";
 import amexIcon from "../../../public/simple-icons_americanexpress.svg";
 
+type CartItem = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
 export default function Pagamento() {
   const [cupom, setCupom] = useState("");
   const [parcelas, setParcelas] = useState(1);
-  const isFirstPurchase = true; // Simula que é a primeira compra do cliente
-  const subtotal = 5 + 10; // Total dos produtos
+  const [cartItems, setCartItems] = useState<Array<CartItem>>([]);
+  const [userAddress, setUserAddress] = useState<string>(
+    "Endereço não encontrado."
+  );
+  const [showQRCode, setShowQRCode] = useState(false);
+  const [qrValue, setQrValue] = useState("");
+  const [isPurchaseConfirmed, setIsPurchaseConfirmed] = useState(false); // Novo estado para controlar a confirmação do pedido
+  const isFirstPurchase = true;
+  const router = useRouter();
+
+  // Carregar dados do localStorage ao montar o componente
+  useEffect(() => {
+    const rawCart = localStorage.getItem("cart");
+    const cart: Array<CartItem> = rawCart ? JSON.parse(rawCart) : [];
+    const rawAddress = localStorage.getItem("userAddress");
+    const address: string = rawAddress
+      ? JSON.parse(rawAddress)
+      : "Endereço não encontrado.";
+
+    setCartItems(cart);
+    setUserAddress(address);
+  }, []);
+
+  // Cálculo dos valores
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
   const desconto = isFirstPurchase ? subtotal * 0.1 : 0;
   const totalSemJuros = subtotal - desconto;
   const juros = parcelas > 3 ? totalSemJuros * 0.03 : 0;
   const totalFinal = totalSemJuros + juros;
+  const parcelaValor = totalFinal / parcelas;
 
-  const router = useRouter();
-
-  // Exemplo de endereço cadastrado (pode ser carregado de um estado global ou API)
-  const userAddress =
-    "Rua Exemplo, 123 - Bairro, Cidade - Estado, CEP 12345-678";
-
-  const handleCupomChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  // Handlers
+  const handleCupomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCupom(e.target.value);
+  };
 
   const handleChangeAddress = () => {
-    router.push("/newlogin"); // Redireciona para a página de login/alteração de endereço
+    router.push("/newlogin");
+  };
+
+  const handleAddProducts = () => {
+    router.push("/menu"); // Redireciona para a página de menu
+  };
+
+  const handlePixClick = () => {
+    setQrValue(totalFinal.toFixed(2)); // Definir o valor total para o QR Code
+    setShowQRCode(!showQRCode); // Alternar a exibição do QR Code
+  };
+
+  // Função para copiar o código do QR
+  const handleCopyQRCode = () => {
+    navigator.clipboard.writeText(qrValue); // Copiar o valor do QR Code para a área de transferência
+    toast.success("Código copiado para a área de transferência!");
+  };
+
+  const handleConfirmOrder = () => {
+    setIsPurchaseConfirmed(true); // Marca a compra como confirmada
+    toast.success("Compra finalizada!");
+
+    // Limpar os campos após 3 segundos
+    setTimeout(() => {
+      toast.success("O pedido está a caminho do seu endereço!");
+      setCupom(""); // Limpa o campo de cupom
+      setCartItems([]); // Limpa o carrinho
+      setUserAddress("Endereço não encontrado."); // Limpa o endereço
+      setParcelas(1); // Reseta a quantidade de parcelas
+      setQrValue(""); // Limpa o valor do QR
+      setShowQRCode(false); // Oculta o QR Code
+      setIsPurchaseConfirmed(false); // Reseta o estado de confirmação
+    }, 3000);
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Finalize sua compra</h1>
 
+      {/* Resumo do pedido */}
       <div className={styles.resumo}>
         <h2 className={styles.resumoTitle}>RESUMO DO PEDIDO</h2>
         <table className={styles.table}>
@@ -45,20 +109,17 @@ export default function Pagamento() {
             <tr>
               <th>Produto</th>
               <th>Qtd</th>
-              <th>Total a pagar</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Café com leite</td>
-              <td>1</td>
-              <td>R$ 5,00</td>
-            </tr>
-            <tr>
-              <td>Bolo de Morango</td>
-              <td>1</td>
-              <td>R$ 10,00</td>
-            </tr>
+            {cartItems.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td>R$ {(item.price * item.quantity).toFixed(2)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <div className={styles.totals}>
@@ -66,9 +127,11 @@ export default function Pagamento() {
           <p>Desconto: R$ {desconto.toFixed(2)}</p>
           <p>Juros (se aplicável): R$ {juros.toFixed(2)}</p>
           <h3>Total: R$ {totalFinal.toFixed(2)}</h3>
+          <p>Valor por parcela: R$ {parcelaValor.toFixed(2)}</p>
         </div>
       </div>
-      {/* Endereço do Usuário */}
+
+      {/* Endereço do usuário */}
       <div className={styles.addressCard}>
         <h2 className={styles.addressTitle}>Endereço de Entrega</h2>
         <p className={styles.addressText}>{userAddress}</p>
@@ -93,10 +156,13 @@ export default function Pagamento() {
         />
       </div>
 
-      {/* Opções de Pagamento */}
+      {/* Opções de pagamento */}
       <div className={styles.payment}>
         <h2 className={styles.paymentTitle}>Método de pagamento</h2>
-        <div className={styles.paymentOption}>
+        <div
+          className={styles.paymentOption}
+          onClick={handlePixClick} // Evento para exibir o QR Code
+        >
           <Image src={pixIcon} alt="Pix" className={styles.icon} />
           <span>Pix</span>
         </div>
@@ -108,50 +174,34 @@ export default function Pagamento() {
           />
           <span>Cartão de crédito</span>
         </div>
-        <div className={styles.parcelamento}>
-          <label htmlFor="parcelas">Parcelamento:</label>
-          <select
-            id="parcelas"
-            value={parcelas}
-            onChange={(e) => setParcelas(parseInt(e.target.value, 10))}
-            className={styles.select}
-          >
-            <option value={1}>1x sem juros</option>
-            <option value={2}>2x sem juros</option>
-            <option value={3}>3x sem juros</option>
-            <option value={4}>4x com juros (3%)</option>
-            <option value={5}>5x com juros (3%)</option>
-          </select>
-        </div>
+
+        {/* Exibição do QR Code */}
+        {showQRCode && (
+          <div className={styles.qrCodeContainer}>
+            <QRCode value={qrValue} size={256} /> {/* Exibe o QR Code */}
+            <button className={styles.copyButton} onClick={handleCopyQRCode}>
+              Copiar Código
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Mensagens e botões */}
-      <p className={styles.obs}>Entrega grátis para qualquer região!</p>
+      {/* Botões de ação */}
       <div className={styles.actions}>
-        <button
-          className={styles.button}
-          onClick={() => alert("Adicionar mais produtos!")}
-        >
-          Adicionar Produtos
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => alert("Pedido confirmado!")}
-        >
+        <button className={styles.button} onClick={handleConfirmOrder}>
           Confirmar Pedido
         </button>
+        <button className={styles.button} onClick={handleAddProducts}>
+          Adicionar Produtos
+        </button>
       </div>
 
-      {/* Bandeiras Aceitas */}
+      {/* Bandeiras aceitas */}
       <div className={styles.bandeiras}>
-        <img src={amexIcon.src} alt="Amex" className={styles.bandeira} />
-        <img src={visaIcon.src} alt="Visa" className={styles.bandeira} />
-        <img src={eloIcon.src} alt="Elo" className={styles.bandeira} />
-        <img
-          src={masterIcon.src}
-          alt="Mastercard"
-          className={styles.bandeira}
-        />
+        <Image src={amexIcon} alt="Amex" className={styles.bandeira} />
+        <Image src={visaIcon} alt="Visa" className={styles.bandeira} />
+        <Image src={eloIcon} alt="Elo" className={styles.bandeira} />
+        <Image src={masterIcon} alt="Mastercard" className={styles.bandeira} />
       </div>
     </div>
   );
