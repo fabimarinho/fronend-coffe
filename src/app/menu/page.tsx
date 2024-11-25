@@ -17,7 +17,7 @@ const Menu = () => {
       id: 1,
       name: "Café Premium",
       category: "Bebidas",
-      price: 15.0,
+      price: 15.00,
       description: "Um café com aroma intenso e sabor marcante.",
     },
     {

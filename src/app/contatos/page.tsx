@@ -1,6 +1,6 @@
 import styles from './styles.module.scss'
 import Image from 'next/image'
-import cafeImage from '../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg'
+import cafeImage from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg"
 
 export default function Page(){
   return(
@@ -23,21 +23,10 @@ export default function Page(){
 
             
             <form className={styles.form}>
-            <h2 className={styles.messageTitle}>Mensagem</h2>
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="Digite seu nome..."
-              />
-              <input
-                className={styles.input}
-                type="email"
-                placeholder="Digite seu email..."
-              />
-              <textarea
-                className={styles.textarea}
-                placeholder="Digite sua mensagem..."
-              />
+            <h2 className={styles.messageTitle}>Feedback</h2>
+             
+              
+              
               <div className={styles.ratingSection}>
   <label className={styles.ratingLabel}>Avaliação:</label>
   <div className={styles.stars}>
@@ -53,25 +42,26 @@ export default function Page(){
     <label htmlFor="star1" className={styles.star}>★</label>
   </div>
 </div>
+<div>
+
 <textarea
     className={styles.textarea}
-    placeholder="Conte-nos sobre sua experiência ou sugerir melhorias"
+    placeholder="Conte-nos sobre sua experiência ou sugerira melhorias"
   />
+   <button type="submit" className={styles.submitButton}>
+                Enviar Feedback
+              </button>
+</div>
             
             </form>
           </div>
         </div>
               <div className={styles.leftSection}>
               <p className={styles.subText}>
-              como foi sua experiência com nossos produtos e serviços? <br/>serviços.
+              Como foi sua experiência com nossos produtos e serviços? <br/>
             </p>
-              <button type="submit" className={styles.submitButton}>
-                Enviar Feedback
-              </button>
-              <textarea
-  className={styles.textarea}
-  placeholder="Tem alguma sugestão para melhorar nosso serviço?"
-/>
+             
+ 
            </div>
            <div className={styles.thankYouMessage}>
   <h3>Obrigado pelo seu Feedback!</h3>
