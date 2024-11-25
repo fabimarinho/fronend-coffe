@@ -14,7 +14,9 @@ export default function Carrinho() {
   const [total, setTotal] = useState<number>(0);
   const router = useRouter(); // Inicializa o useRouter
   const [cartItems, setCartItems] = useState<Produto[]>([]);
+
   const irParaPagamento = () => {
+   // handleAdd(product, total, quantity)
     router.push("/pagamento");
   };
 
