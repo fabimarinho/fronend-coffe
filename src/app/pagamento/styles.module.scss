@@ -143,3 +143,32 @@
 .copyButton:hover {
   background-color: #45a049;
 }
+.actions{
+  display: flex;
+  justify-content: center; // colocou o botão no meio
+  gap: 10px; // espaço entre os botões 
+ 
+.button{
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white; // Cor do texto branca
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      filter: brightness(1.1); // Realce leve no hover
+    }
+}  
+  
+}
+.order{
+  margin-right: 10px;
+  background-color: #4CAF50; // Verde escuro
+
+  .product {
+    background-color: #8B4513; // Marrom escuro
+  }
+}

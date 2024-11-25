@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"; // Importando useRouter para redire
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import backgroundImg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import eyeIcon from "../../../public/eye-slash-svgrepo-com.svg"
 
 export default function NewLogin() {
   const router = useRouter(); // Hook de navegação
@@ -17,10 +17,6 @@ export default function NewLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // Mensagem de sucesso
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -88,15 +84,14 @@ export default function NewLogin() {
         setConfirmPassword("");
         setEmail("");
         setConfirmEmail("");
+        setSuccessMessage("");
 
-        //após 3 segundos, redireciona para a página de login
-        setTimeout(() => {
-          setSuccessMessage("");
-          router.push("/login");
-        }, 3000);
-      }, 3000); // <-- Aqui estava o problema, faltava o fechamento deste bloco
+        // Redirecionando para a página de login
+        router.push("/login");
+      }, 3000); // Limpa e redireciona após 3 segundos
     }
   };
+
   // Função para garantir que a entrada de texto seja convertida para maiúsculas
   const handleUppercase = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.toUpperCase();
@@ -106,7 +101,6 @@ export default function NewLogin() {
     <div className={styles.loginContainer}>
       <div className={styles.imageContainer}>
         <Image
-          className={styles.imgcoffee}
           src={backgroundImg}
           alt="Imagem de fundo"
           objectFit="cover"
@@ -119,28 +113,26 @@ export default function NewLogin() {
         <h1>Novo Usuário</h1>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.sectio}>
+          <div className={styles.section}>
             <h2> Dados Pessoais</h2>
             <div className={styles.inputGroup}>
-              <div className={styles.divAlign}>
-                <label htmlFor="fullName">
-                  <span>👤</span> <h5>Digite seu nome completo</h5>
-                </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  placeholder="Digite seu nome completo"
-                  value={formData.fullName}
-                  onChange={(e) => {
-                    const uppercased = e.target.value.toUpperCase();
-                    setFormData({ ...formData, fullName: uppercased });
-                  }}
-                  required
-                />
-              </div>
-              <div className={styles.divAlign}>
+              <label htmlFor="fullName">
+                <span>👤</span> Digite seu nome completo
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                placeholder="Digite seu nome completo"
+                value={formData.fullName}
+                onChange={(e) => {
+                  const uppercased = e.target.value.toUpperCase();
+                  setFormData({ ...formData, fullName: uppercased });
+                }}
+                required
+              />
+              <div className={styles.inputGroup}>
                 <label htmlFor="phoneNumber">
-                  <span>📞</span> <h5>Digite um número de telefone</h5>
+                  <span>📞</span> Digite um número de telefone
                 </label>
                 <input
                   type="tel"
@@ -168,9 +160,9 @@ export default function NewLogin() {
                 />
               </div>
 
-              <div className={styles.divAlign}>
+              <div className={styles.inputGroup}>
                 <label htmlFor="email">
-                  <span>📧</span> <h5>Digite seu email</h5>
+                  <span>📧</span> Digite seu email
                 </label>
                 <input
                   type="email"
@@ -181,9 +173,9 @@ export default function NewLogin() {
                   required
                 />
               </div>
-              <div className={styles.divAlign}>
+              <div className={styles.inputGroup}>
                 <label htmlFor="confirmEmail">
-                  <span>📧</span> <h5>Confirme seu email</h5>
+                  <span>📧</span> Confirme seu email
                 </label>
                 <input
                   type="email"
@@ -199,10 +191,9 @@ export default function NewLogin() {
             </div>
           </div>
           {/*bloco 2 endereço */}
-          <h2>Endereço de Entrega</h2>
-          <div className={styles.section}>
-            <div className={styles.inputGroupStreet}>
-              <label htmlFor="street">Rua: </label>
+                    <div className={styles.inputRow}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="street">Rua</label>
               <input
                 type="text"
                 id="street"
@@ -214,11 +205,12 @@ export default function NewLogin() {
                 required
               />
             </div>
-            <div className={styles.inputGroupNumber}>
+            <div className={styles.inputGroup}>
               <label htmlFor="number">Nº</label>
               <input
                 type="text"
                 id="number"
+                placeholder="Número"
                 value={formData.number}
                 onChange={(e) =>
                   setFormData({ ...formData, number: e.target.value })
@@ -227,70 +219,71 @@ export default function NewLogin() {
               />
             </div>
           </div>
+          <div className={styles.addressgroup}> 
 
-          <div className={styles.divCountry}>
-            <div className={styles.inputGroupCity}>
-              <label htmlFor="city">Cidade: </label>
-              <input
-                type="text"
-                id="city"
-                placeholder="Cidade"
-                value={formData.city}
-                onChange={(e) =>
-                  setFormData({ ...formData, city: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className={styles.inputGroupTown}>
-              <label htmlFor="neighborhood">Bairro: </label>
-              <input
-                type="text"
-                id="neighborhood"
-                placeholder="Bairro"
-                value={formData.neighborhood}
-                onChange={(e) =>
-                  setFormData({ ...formData, neighborhood: e.target.value })
-                }
-                required
-              />
-            </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="neighborhood">Bairro</label>
+            <input
+              type="text"
+              id="neighborhood"
+              placeholder="Bairro"
+              value={formData.neighborhood}
+              onChange={(e) =>
+                setFormData({ ...formData, neighborhood: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="state">Estado</label>
+            <input
+              type="text"
+              id="state"
+              placeholder="Estado"
+              value={formData.state}
+              onChange={(e) =>
+                setFormData({ ...formData, state: e.target.value })
+              }
+              required
+            />
+          </div>
           </div>
 
-          <div className={styles.divStateCEP}>
-            <div className={styles.inputGroupState}>
-              <label htmlFor="state">Estado: </label>
-              <input
-                type="text"
-                id="state"
-                //placeholder="Estado"
-                value={formData.state}
-                onChange={(e) =>
-                  setFormData({ ...formData, state: e.target.value })
-                }
-                required
-              />
+           <div className={styles.city}>
+              
             </div>
-
-            <div className={styles.inputGroupCEP}>
-              <label htmlFor="postalCode">CEP: </label>
-              <input
-                type="text"
-                id="postalCode"
-                placeholder=" 00000-000"
-                value={formData.postalCode}
-                onChange={(e) =>
-                  setFormData({ ...formData, postalCode: e.target.value })
-                }
-                required
-              />
-            </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="postalCode">CEP</label>
+            <input
+              type="text"
+              id="postalCode"
+              placeholder="CEP"
+              value={formData.postalCode}
+              onChange={(e) =>
+                setFormData({ ...formData, postalCode: e.target.value })
+              }
+              required
+            />
           </div>
-
-          <div className={styles.inputGroupComplement}>
+            
+          <div className={styles.inputGroup}>
+            <label htmlFor="city">Cidade</label>
+            <input
+              type="text"
+              id="city"
+              placeholder="Cidade"
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className={styles.inputGroup}>
             <label htmlFor="complement">Complemento</label>
-
-            <textarea
+            <input
+              type="text"
+              id="complement"
               placeholder="Apartamento, bloco, etc. (opcional)"
               value={formData.complement}
               onChange={(e) =>
@@ -299,10 +292,11 @@ export default function NewLogin() {
             />
           </div>
           {/*bloco 3 senha*/}
-          <div className={styles.DivPassword}>
-            <div className={styles.inputGroupPass}>
+          <div className={styles.section}>
+            <h2>Senha</h2>
+            <div className={styles.inputGroup}>
               <label htmlFor="password">
-                <span>🔒</span> Digite uma senha
+                <span>🔒</span> Digite uma senha...
               </label>
               <div className={styles.passwordContainer}>
                 <input
@@ -313,18 +307,21 @@ export default function NewLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <span
-                  onClick={togglePasswordVisibility}
+                <Image
+                  src={eyeIcon}
+                  alt="Ícone de olho"
+                  width={24}
+                  height={24}
                   className={styles.eyeIcon}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
-                  {/* Ícone que alterna */}
-                </span>
+                  onClick={() => setShowPassword(!showPassword)} // Alternar visibilidade
+                />
               </div>
             </div>
 
-            <div className={styles.inputGroupRepeatPass}>
-              <label htmlFor="confirmPassword">Confirma a senha</label>
+            <div className={styles.inputGroup}>
+              <label htmlFor="confirmPassword">
+                <span>🔒</span> Confirma a senha
+              </label>
               <div className={styles.passwordContainer}>
                 <input
                   type={showConfirmPassword ? "text" : "password"}
@@ -334,20 +331,21 @@ export default function NewLogin() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-                <span
-                  onClick={togglePasswordVisibility}
-                  className={styles.eyeIcon}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
-                  {/* Ícone que alterna */}
-                </span>
               </div>
+              <p className={styles.passwordInfo}>
+                A senha deve conter pelo menos 1 número, 1 letra maiúscula, 1
+                letra minúscula e 1 caractere especial.
+              </p>
+              <Image
+                src={eyeIcon}
+                alt="Ícone de olho"
+                width={24}
+                height={24}
+                className={styles.eyeIcon}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Alternar visibilidade
+              />
             </div>
           </div>
-          <p className={styles.passwordInfo}>
-            A senha deve conter pelo menos 1 número, 1 letra maiúscula, 1 letra
-            minúscula e 1 caractere especial.
-          </p>
 
           {passwordError && <p className={styles.error}>{passwordError}</p>}
 
