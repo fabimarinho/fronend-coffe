@@ -14,12 +14,13 @@ import visaIcon from "../../../public/logos_visaelectron.svg";
 import amexIcon from "../../../public/simple-icons_americanexpress.svg";
 
 type CartItem = {
-  name: string;
+  product: string;
   quantity: number;
   price: number;
 };
 
 export default function Pagamento() {
+  const [total, setTotal] = useState<number>(0);
   const {Image: QRCodeImage} = useQRCode();
   const [cupom, setCupom] = useState("");
   const [parcelas, setParcelas] = useState(1);
@@ -34,16 +35,33 @@ export default function Pagamento() {
 
   // Carregar dados do localStorage ao montar o componente
   useEffect(() => {
-    const rawCart = localStorage.getItem("cart");
-    const cart: Array<CartItem> = rawCart ? JSON.parse(rawCart) : [];
+   // const rawCart = localStorage.getItem("cart");
+    //const cart: Array<CartItem> = rawCart ? JSON.parse(rawCart) : [];
+    const savedCart = localStorage.getItem("cartItems");
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
     const rawAddress = localStorage.getItem("userAddress");
     const address: string = rawAddress
       ? JSON.parse(rawAddress)
       : "Endereço não encontrado.";
 
-    setCartItems(cart);
+    //setCartItems(cart);
     setUserAddress(address);
+    console.log(savedCart)
   }, []);
+
+  useEffect(() => {
+    
+  }, []);
+
+  const calcularTotal = () => {
+    const subtotal = cartItems.reduce(
+      (acc, item) => acc + item.quantity * item.price,
+      0
+    );
+    return subtotal;
+  };
 
   // Cálculo dos valores
   const subtotal = cartItems.reduce(
@@ -108,14 +126,14 @@ export default function Pagamento() {
           <thead>
             <tr>
               <th>Produto</th>
-              <th>Qtd</th>
+              <th>Quantidade</th>
               <th>Total</th>
             </tr>
           </thead>
           <tbody>
             {cartItems.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
+                <td>{item.product}</td>
                 <td>{item.quantity}</td>
                 <td>R$ {(item.price * item.quantity).toFixed(2)}</td>
               </tr>

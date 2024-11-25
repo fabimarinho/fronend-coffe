@@ -32,7 +32,7 @@ export default function login() {
       }
 
       // Validações bem-sucedidas, redireciona para a página home
-      router.push("/home");
+      router.push("/");
     };
 
 
