@@ -212,10 +212,10 @@ export default function Pagamento() {
 
       {/* Botões de ação */}
       <div className={styles.actions}>
-        <button className={styles.order} onClick={handleConfirmOrder}>
+        <button className={styles.button} onClick={handleConfirmOrder}>
           Confirmar Pedido
         </button>
-        <button className={styles.product} onClick={handleAddProducts}>
+        <button className={styles.button} onClick={handleAddProducts}>
           Adicionar Produtos
         </button>
       </div>

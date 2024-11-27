@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 import Image from "next/image";
 import coffeimg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
 import { FiPlus } from "react-icons/fi";
+import Link from "next/link";
 
 const Menu = () => {
   const [data, setData] = useState<any[]>([]); // Cart data
@@ -17,7 +18,7 @@ const Menu = () => {
       id: 1,
       name: "Café Premium",
       category: "Bebidas",
-      price: 15.0,
+      price: 15.00,
       description: "Um café com aroma intenso e sabor marcante.",
     },
     {
@@ -222,6 +223,10 @@ const Menu = () => {
         >
           Filtrar por Categoria
         </button>
+        
+        <Link className={styles.carrinho} href="/carrinho" >
+         Ver Carrinho
+        </Link>
       </div>
 
       <div className={styles.menuContainer}>
