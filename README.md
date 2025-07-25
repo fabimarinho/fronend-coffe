@@ -137,5 +137,5 @@ Este projeto está sob a licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) 
 
 ---
 
-Desenvolvido com ❤️ por [Seu Nome]
+Desenvolvido com ❤️ por Fabiane
 
