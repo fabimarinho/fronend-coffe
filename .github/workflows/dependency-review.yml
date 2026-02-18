@@ -1,0 +1,53 @@
+name: Dependency Review
+
+on:
+  schedule:
+    - cron: "0 10 * * 1"
+  workflow_dispatch:
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Collect outdated packages
+        run: |
+          npm outdated --long > outdated.txt || true
+
+      - name: Run security audit (prod dependencies)
+        run: |
+          npm audit --omit=dev --audit-level=moderate > audit.txt
+
+      - name: Publish summary
+        if: always()
+        run: |
+          echo "## Dependency Review" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Outdated packages" >> $GITHUB_STEP_SUMMARY
+          if [ -s outdated.txt ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat outdated.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No outdated packages found." >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Audit (production dependencies)" >> $GITHUB_STEP_SUMMARY
+          if [ -s audit.txt ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat audit.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No audit output generated." >> $GITHUB_STEP_SUMMARY
+          fi
