@@ -114,6 +114,10 @@
 }
 
 .accessButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
   border: none;
   border-radius: 12px;
   padding: 0.85rem 1rem;
@@ -139,6 +143,11 @@
     cursor: not-allowed;
     transform: none;
   }
+}
+
+.googleIcon {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .signupLink {

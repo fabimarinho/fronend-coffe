@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const router = useRouter();
@@ -60,7 +61,14 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <button type="submit" className={styles.accessButton} disabled={isLoading}>
-              {isLoading ? "Entrando..." : "Entrar com Google"}
+              {isLoading ? (
+                "Entrando..."
+              ) : (
+                <>
+                  <FcGoogle aria-hidden="true" className={styles.googleIcon} />
+                  <span>Entrar com Google</span>
+                </>
+              )}
             </button>
 
             <p className={styles.signupLink}>
