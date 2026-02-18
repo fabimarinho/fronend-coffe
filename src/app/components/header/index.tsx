@@ -109,7 +109,14 @@ export default function Header() {
 
         <div className={styles.logoSection}>
           <Link href="/">
-            <Image src="/logo.png" alt="Logo da cafeteria" width={80} height={80} className={styles.logo} priority />
+            <Image
+              src="/cafe%201.svg"
+              alt="Logo da cafeteria"
+              width={80}
+              height={80}
+              className={styles.logo}
+              priority
+            />
           </Link>
           <h2 className={`${styles.logoText} ${styles.logoTextLargeScreen}`}>Cafe & Cia</h2>
         </div>
