@@ -54,14 +54,12 @@ export function useCart() {
   }, []);
 
   const removeItem = useCallback((id: string) => {
-    setItems((prev) => {
-      const item = prev.find((currentItem) => currentItem.id === id);
-      if (item) {
-        toast.success(`${item.name} removido do carrinho`);
-      }
-      return prev.filter((currentItem) => currentItem.id !== id);
-    });
-  }, []);
+    const itemToRemove = items.find((item) => item.id === id);
+    setItems((prev) => prev.filter((currentItem) => currentItem.id !== id));
+    if (itemToRemove) {
+      toast.success(`${itemToRemove.name} removido do carrinho`);
+    }
+  }, [items]);
 
   const updateQuantity = useCallback((id: string, quantity: number) => {
     if (quantity < 1 || quantity > 99) {
