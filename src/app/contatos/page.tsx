@@ -1,73 +1,88 @@
-import styles from './styles.module.scss'
-import Image from 'next/image'
-import cafeImage from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg"
+"use client";
 
-export default function Page(){
-  return(
-    <main>
-   <div className={styles.container}>
-    <Image
-     className={styles.img} 
-     src={cafeImage}
-    alt='Imagem de fundo'
-    objectFit='cover' // A imagem cobre toda área de fundo
-    quality={100}
-    priority={true}
-    />
-<h1 className={styles.contatoTitle}>Feedback</h1>
+import { FormEvent, useState } from "react";
+import Image from "next/image";
+import styles from "./styles.module.scss";
+import cafeImage from "../../../public/coffee-hero.svg";
 
-<div className={styles.content}>
-          
-          <div className={styles.rightSection}>
-          <h2 className={styles.question}>Sua opnião é muito importante<br/> para nós!<br/>Por favor,<br/>compartilhe sua experiência e sugestões.</h2>
+export default function Page() {
+  const [rating, setRating] = useState<number>(0);
+  const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-            
-            <form className={styles.form}>
-            <h2 className={styles.messageTitle}>Feedback</h2>
-             
-              
-              
-              <div className={styles.ratingSection}>
-  <label className={styles.ratingLabel}>Avaliação:</label>
-  <div className={styles.stars}>
-    <input type="radio" id="star5" name="rating" value="5" />
-    <label htmlFor="star5" className={styles.star}>★</label>
-    <input type="radio" id="star4" name="rating" value="4" />
-    <label htmlFor="star4" className={styles.star}>★</label>
-    <input type="radio" id="star3" name="rating" value="3" />
-    <label htmlFor="star3" className={styles.star}>★</label>
-    <input type="radio" id="star2" name="rating" value="2" />
-    <label htmlFor="star2" className={styles.star}>★</label>
-    <input type="radio" id="star1" name="rating" value="1" />
-    <label htmlFor="star1" className={styles.star}>★</label>
-  </div>
-</div>
-<div>
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 2500);
+    setMessage("");
+    setRating(0);
+  };
 
-<textarea
-    className={styles.textarea}
-    placeholder="Conte-nos sobre sua experiência ou sugerira melhorias"
-  />
-   <button type="submit" className={styles.submitButton}>
-                Enviar Feedback
-              </button>
-</div>
-            
-            </form>
-          </div>
+  return (
+    <main className={styles.page}>
+      <section className={styles.hero}>
+        <Image className={styles.heroImage} src={cafeImage} alt="Cafe e atendimento" priority />
+        <div className={styles.overlay} />
+        <div className={styles.heroContent}>
+          <h1>Feedback</h1>
+          <p>Sua opiniao nos ajuda a melhorar cada detalhe da experiencia.</p>
         </div>
-              <div className={styles.leftSection}>
-              <p className={styles.subText}>
-              Como foi sua experiência com nossos produtos e serviços? <br/>
-            </p>
-             
- 
-           </div>
-           <div className={styles.thankYouMessage}>
-  <h3>Obrigado pelo seu Feedback!</h3>
-  <p>Valorizamos muito sua opinião e vamos usá-la para melhorar continuamente nossos serviços.</p>
-</div>
-      </div>
+      </section>
+
+      <section className={styles.content}>
+        <article className={styles.infoCard}>
+          <h2>Conte para a gente</h2>
+          <p>
+            Como foi sua experiencia com nossos produtos e servicos? Seus comentarios orientam
+            nossas proximas melhorias.
+          </p>
+          <ul>
+            <li>Qualidade dos produtos</li>
+            <li>Tempo de atendimento</li>
+            <li>Sugestoes para o menu</li>
+          </ul>
+        </article>
+
+        <article className={styles.formCard}>
+          <h2>Enviar feedback</h2>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.ratingSection}>
+              <p>Avaliacao</p>
+              <div className={styles.stars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    className={`${styles.star} ${rating >= star ? styles.starActive : ""}`}
+                    onClick={() => setRating(star)}
+                    aria-label={`Avaliar com ${star} estrela${star > 1 ? "s" : ""}`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <textarea
+              className={styles.textarea}
+              placeholder="Conte como foi sua experiencia e o que podemos melhorar"
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              required
+            />
+
+            <button type="submit" className={styles.submitButton}>
+              Enviar feedback
+            </button>
+          </form>
+
+          {submitted && (
+            <div className={styles.successBanner}>
+              Obrigado! Seu feedback foi enviado com sucesso.
+            </div>
+          )}
+        </article>
+      </section>
     </main>
   );
 }

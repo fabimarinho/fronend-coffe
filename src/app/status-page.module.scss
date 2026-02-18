@@ -1,0 +1,74 @@
+.statePage {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(214, 122, 51, 0.13), transparent 38%),
+    linear-gradient(180deg, #f7f1e9 0%, #f0e2d4 100%);
+}
+
+.stateCard {
+  width: min(560px, 100%);
+  border-radius: 18px;
+  border: 1px solid #e6d7c6;
+  background: #fffdf9;
+  box-shadow: 0 14px 32px rgba(42, 28, 18, 0.1);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  text-align: center;
+
+  h1 {
+    color: #2f2017;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+  }
+
+  p {
+    margin-top: 0.55rem;
+    color: #6a4f3b;
+    line-height: 1.55;
+  }
+}
+
+.actionButton {
+  margin-top: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(140deg, #d67a33, #b8642a);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.72rem 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.linkButton {
+  margin-top: 0.95rem;
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid #decab5;
+  background: #f8eee4;
+  color: #6a4227;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.68rem 1rem;
+}
+
+.loadingDot {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.55rem;
+  border-radius: 999px;
+  border: 3px solid #edd7c2;
+  border-top-color: #c26d2f;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

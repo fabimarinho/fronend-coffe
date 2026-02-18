@@ -1,119 +1,194 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { FaShoppingCart, FaTrash } from "react-icons/fa";
-import style from "./styles.module.scss";
 
-interface Produto {
-  product: string;
-  price: number;
-  quantity: number;
-}
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useCart } from "@/hooks/useCart";
+import styles from "./styles.module.scss";
 
-export default function Carrinho() {
-  const [total, setTotal] = useState<number>(0);
-  const router = useRouter(); // Inicializa o useRouter
-  const [cartItems, setCartItems] = useState<Produto[]>([]);
+type DeliveryMode = "retirada" | "entrega";
 
-  const irParaPagamento = () => {
-   // handleAdd(product, total, quantity)
-    router.push("/pagamento");
-  };
+const ADDRESS_STORAGE_KEY = "userAddress";
+const DELIVERY_STORAGE_KEY = "deliveryMode";
 
-  const calcularTotal = () => {
-    const subtotal = cartItems.reduce(
-      (acc, item) => acc + item.quantity * item.price,
-      0
-    );
-    return subtotal;
-  };
+export default function CarrinhoPage() {
+  const { items, summary, isLoading, removeItem, clearCart } = useCart();
+  const [deliveryMode, setDeliveryMode] = useState<DeliveryMode>("retirada");
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
-    // Carrega o estado do carrinho a partir do localStorage
-    const savedCart = localStorage.getItem("cartItems");
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+    const savedMode = localStorage.getItem(DELIVERY_STORAGE_KEY);
+    const savedAddress = localStorage.getItem(ADDRESS_STORAGE_KEY);
+
+    if (savedMode === "entrega" || savedMode === "retirada") {
+      setDeliveryMode(savedMode);
+    }
+
+    if (savedAddress) {
+      try {
+        setAddress(JSON.parse(savedAddress));
+      } catch {
+        setAddress(savedAddress);
+      }
     }
   }, []);
-  useEffect(() => {
-    setTotal(calcularTotal()); // Atualiza o total sempre que o cartItems mudar
-  }, [cartItems]);
 
-  // Função para redirecionar o usuário para a página de menu
-  const handleChooseMoreProducts = () => {
-    router.push("/menu"); // Define a rota da página de menu aqui
+  const handleDeliveryMode = (mode: DeliveryMode) => {
+    setDeliveryMode(mode);
+    localStorage.setItem(DELIVERY_STORAGE_KEY, mode);
+
+    if (mode === "retirada") {
+      localStorage.removeItem(ADDRESS_STORAGE_KEY);
+    } else if (address.trim()) {
+      localStorage.setItem(ADDRESS_STORAGE_KEY, JSON.stringify(address.trim()));
+    }
   };
 
-  // Função para remover um item do carrinho
-  const handleRemoveItem = (index: number) => {
-    const updatedCartItems = cartItems.filter((_, i) => i !== index); // Remove o item com base no índice
-    setCartItems(updatedCartItems); // Atualiza o estado do carrinho
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems)); // Atualiza o localStorage
+  const handleAddressChange = (value: string) => {
+    setAddress(value);
+    if (value.trim()) {
+      localStorage.setItem(ADDRESS_STORAGE_KEY, JSON.stringify(value.trim()));
+    } else {
+      localStorage.removeItem(ADDRESS_STORAGE_KEY);
+    }
   };
+
+  const canCheckout = deliveryMode === "retirada" || address.trim().length >= 8;
+
+  if (isLoading) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.loadingBox}>
+          <h1>Carregando carrinho...</h1>
+        </section>
+      </main>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.emptyCard}>
+          <h1>Seu carrinho esta vazio</h1>
+          <p className={styles.emptyIcon}>🛒</p>
+          <p className={styles.emptyText}>Adicione produtos para continuar.</p>
+          <div className={styles.actions}>
+            <Link href="/menu" className={styles.buttonSuccess}>
+              Ir para o menu
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
-    <div className={style.cartContainer}>
-      <header className={style.cartTitle}>
-        <h1>
-          <FaShoppingCart /> Carrinho de Compras
-        </h1>
-      </header>
-
-      <div className={style.cartItems}>
-        {cartItems.length === 0 ? (
-          <p className={style.emptyCart}>
-            Seu carrinho está vazio. Que tal adicionar algo delicioso?
-          </p>
-        ) : (
-          <>
-            <div className={style.cartHeader}>
-              <span>Produto</span>
-              <span>Quantidade</span>
-              <span>Preço Unitário</span>
-              <span className={style.totaly}>Total</span>
-              <span className={style.trashOut}>Excluir Item</span>
+    <main className={styles.page}>
+      <section className={styles.container}>
+        <article className={styles.mainCard}>
+          <header className={styles.header}>
+            <div>
+              <h1>Seu carrinho</h1>
+              <p>Confira os itens antes de finalizar o pedido.</p>
             </div>
-            {cartItems?.map((item: any, index: number) => (
-              <div key={index} className={style.cartItem}>
-                <span className={style.spanProduto}>{item.product}</span>
-                <span className={style.quantity}>{item.quantity}</span>
-                <span className={style.price}>R$ {item.price.toFixed(2)}</span>
-                <span className={style.sub}>
-                  R$ {(item.quantity * item.price).toFixed(2)}
-                </span>
-                <span
-                  className={style.removeIcon}
-                  onClick={() => handleRemoveItem(index)}
-                >
-                  <FaTrash />
-                </span>
+          </header>
+
+          <div className={styles.itemsList}>
+            {items.map((item) => {
+              const name = item.name || "Produto";
+              const subtotal = item.price * item.quantity;
+              return (
+                <article key={item.id} className={styles.itemCard}>
+                  <div className={styles.itemTop}>
+                    <p className={styles.itemName}>{name}</p>
+                    <p className={styles.itemPrice}>R$ {subtotal.toFixed(2)}</p>
+                  </div>
+                  <div className={styles.itemBottom}>
+                    <span className={styles.qty}>Quantidade: {item.quantity}</span>
+                    <button
+                      className={styles.removeBtn}
+                      onClick={() => removeItem(item.id)}
+                      aria-label={`Remover ${name}`}
+                      type="button"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <section className={styles.deliveryCard}>
+            <h2>Entrega</h2>
+            <div className={styles.deliveryOptions}>
+              <button
+                type="button"
+                className={`${styles.deliveryOption} ${deliveryMode === "retirada" ? styles.selectedDelivery : ""}`}
+                onClick={() => handleDeliveryMode("retirada")}
+              >
+                Retirar na loja
+              </button>
+              <button
+                type="button"
+                className={`${styles.deliveryOption} ${deliveryMode === "entrega" ? styles.selectedDelivery : ""}`}
+                onClick={() => handleDeliveryMode("entrega")}
+              >
+                Entrega em domicilio
+              </button>
+            </div>
+
+            {deliveryMode === "entrega" && (
+              <div className={styles.addressField}>
+                <label htmlFor="deliveryAddress">Endereco de entrega</label>
+                <textarea
+                  id="deliveryAddress"
+                  className={styles.addressInput}
+                  placeholder="Rua, numero, bairro, cidade e referencia"
+                  value={address}
+                  onChange={(event) => handleAddressChange(event.target.value)}
+                />
               </div>
-            ))}
-          </>
-        )}
-      </div>
+            )}
+          </section>
+        </article>
 
-      <div className={style.cartSummary}>
-        <p>Subtotal: R$ {calcularTotal().toFixed(2)}</p>
-        <p>Frete: grátis</p>
-        <p>Total a pagar: R$ {calcularTotal().toFixed(2)}</p>
-        <div className={style.hintText}>
-          <p>Se possuir cupons de desconto utilize na próxima página</p>
-        </div>
-      </div>
+        <aside className={styles.summaryCard}>
+          <h2>Resumo</h2>
+          <div className={styles.line}>
+            <span>Subtotal</span>
+            <strong>R$ {summary.subtotal.toFixed(2)}</strong>
+          </div>
+          <div className={styles.line}>
+            <span>Entrega</span>
+            <strong>R$ {summary.shipping.toFixed(2)}</strong>
+          </div>
+          <div className={styles.line}>
+            <span>Desconto</span>
+            <strong>R$ {summary.discount.toFixed(2)}</strong>
+          </div>
+          <div className={styles.total}>
+            <span>Total</span>
+            <span>R$ {summary.total.toFixed(2)}</span>
+          </div>
+          <p className={styles.hintText}>Revise os dados antes de confirmar.</p>
 
-      <div className={style.cartButtons}>
-        <button className={style.buttonRed} onClick={handleChooseMoreProducts}>
-          Escolher mais produtos
-        </button>
-        <button
-          className={style.buttonGreen}
-          onClick={irParaPagamento}
-          disabled={cartItems.length === 0}
-        >
-          Finalizar compra
-        </button>
-      </div>
-    </div>
+          <div className={styles.actions}>
+            <button className={styles.buttonError} onClick={clearCart} type="button">
+              Limpar carrinho
+            </button>
+            <Link
+              href="/pagamento"
+              className={`${styles.buttonSuccess} ${!canCheckout ? styles.checkoutDisabled : ""}`}
+              onClick={(event) => {
+                if (!canCheckout) event.preventDefault();
+              }}
+              aria-disabled={!canCheckout}
+            >
+              {canCheckout ? "Finalizar pedido" : "Informe o endereco para entrega"}
+            </Link>
+          </div>
+        </aside>
+      </section>
+    </main>
   );
 }

@@ -1,287 +1,309 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import styles from "./styles.module.scss";
-
-import Image from "next/image";
-import coffeimg from "../../../public/DALL·E 2024-09-26 10.48.56 - A dynamic scene of coffee being poured into a cup. The coffee is mid-air, with droplets splashing as the stream flows from a coffee pot into a simple  1 (1).svg";
-import { FiPlus } from "react-icons/fi";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { FiPlus, FiShoppingBag } from "react-icons/fi";
+import { Coffee, CakeSlice, Heart, Star } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { products as allProducts, type Product } from "@/data/products";
+import styles from "./styles.module.scss";
+import coffeeImage from "../../../public/coffee-hero.svg";
 
-const Menu = () => {
-  const [data, setData] = useState<any[]>([]); // Cart data
-  const [showMessage, setShowMessage] = useState(false); // Show message when adding to cart
+type CategoryFilter = "Todos" | "Bebidas" | "Doces";
+type MenuMetric = "add_to_cart" | "top_seller_add" | "favorite_toggle" | "load_more";
+type MenuStats = Record<MenuMetric, number>;
+
+const CATEGORY_FILTERS: CategoryFilter[] = ["Todos", "Bebidas", "Doces"];
+const FAVORITES_KEY = "menuFavorites";
+const MENU_STATS_KEY = "menuAnalyticsStats";
+const PAGE_SIZE = 6;
+const TOP_SELLER_IDS = [1, 5, 2, 4];
+const DEFAULT_MENU_STATS: MenuStats = {
+  add_to_cart: 0,
+  top_seller_add: 0,
+  favorite_toggle: 0,
+  load_more: 0,
+};
+
+function getCoverMeta(category: Product["category"]) {
+  if (category === "Bebidas") {
+    return {
+      icon: <Coffee size={28} />,
+      className: styles.coverDrink,
+      label: "Cafe especial",
+    };
+  }
+  return {
+    icon: <CakeSlice size={28} />,
+    className: styles.coverDessert,
+    label: "Doce artesanal",
+  };
+}
+
+export default function Menu() {
+  const { addItem } = useCart();
+  const products = useMemo(() => allProducts, []);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [filter, setFilter] = useState("");
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Café Premium",
-      category: "Bebidas",
-      price: 15.00,
-      description: "Um café com aroma intenso e sabor marcante.",
-    },
-    {
-      id: 2,
-      name: "Torta de Morango",
-      category: "Doces",
-      price: 12.0,
-      description: "Deliciosa torta feita com morangos frescos.",
-    },
-    {
-      id: 1,
-      name: "Café Premium",
-      category: "Bebidas",
-      price: 15.0,
-      description: "Um café com aroma intenso e sabor marcante.",
-    },
-    {
-      id: 2,
-      name: "Torta de Morango",
-      category: "Doces",
-      price: 12.0,
-      description: "Deliciosa torta feita com morangos frescos.",
-    },
-    {
-      id: 3,
-      name: "Expresso",
-      category: "Bebidas",
-      price: 15.0,
-      description: "Um café com sabor inesquecível.",
-    },
-    {
-      id: 4,
-      name: "Torta de chocolate",
-      category: "Doces",
-      price: 12.5,
-      description: "Fatia de torta de chocolate grego, com chantilly",
-    },
-    {
-      id: 5,
-      name: "Capuccino",
-      category: "Bebidas",
-      price: 7.0,
-      description: "Expresso com leite vaporizado.",
-    },
-    {
-      id: 6,
-      name: "Torta de banana",
-      category: "Doces",
-      price: 9.0,
-      description: "Fatia de torta de banana com canela",
-    },
-    {
-      id: 7,
-      name: "Afogato",
-      category: "Bebidas",
-      price: 9.0,
-      description: "Expresso com sorvete.",
-    },
-    {
-      id: 8,
-      name: "Torta de maçã",
-      category: "Doces",
-      price: 11.0,
-      description: "Fatia de torta de maçã do nordeste brasileiro.",
-    },
-    {
-      id: 9,
-      name: "Café Macchiato",
-      category: "Bebidas",
-      price: 6.5,
-      description: "Café manchado com leite vaporizado.",
-    },
-    {
-      id: 10,
-      name: "Torta de nozes",
-      category: "Doces",
-      price: 14.0,
-      description: "Fatia de torta com nozes americanas",
-    },
-    {
-      id: 11,
-      name: "Chocolate quente",
-      category: "Bebidas",
-      price: 8.0,
-      description: "Leite vaporizado com manchas de chocolate.",
-    },
-    {
-      id: 12,
-      name: "Torta de nozes",
-      category: "Doces",
-      price: 14.0,
-      description: "Fatia de torta com nozes americanas",
-    },
-    {
-      id: 13,
-      name: "Café gelado",
-      category: "Bebidas",
-      price: 6.0,
-      description: "Frappe de café.",
-    },
-    {
-      id: 14,
-      name: "Torta de abacaxi",
-      category: "Doces",
-      price: 8.0,
-      description: "Fatia com torta de abacaxi caramelizado.",
-    },
-    {
-      id: 15,
-      name: "Leite macchiado",
-      category: "Bebidas",
-      price: 7.5,
-      description: "Leite vaporizado, manchado com café.",
-    },
-    {
-      id: 16,
-      name: "Torta de especial",
-      category: "Doces",
-      price: 14.5,
-      description: "Fatia de torta americana, com calda de cholocate",
-    },
-  ]);
+  const [activeCategory, setActiveCategory] = useState<CategoryFilter>("Todos");
+  const [onlyAffordable, setOnlyAffordable] = useState(false);
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [favorites, setFavorites] = useState<number[]>([]);
+
+  const recordMenuMetric = (metric: MenuMetric) => {
+    const parsed = (() => {
+      try {
+        const raw = localStorage.getItem(MENU_STATS_KEY);
+        return raw ? (JSON.parse(raw) as MenuStats) : DEFAULT_MENU_STATS;
+      } catch {
+        return DEFAULT_MENU_STATS;
+      }
+    })();
+
+    const next: MenuStats = {
+      add_to_cart: Number(parsed.add_to_cart ?? 0),
+      top_seller_add: Number(parsed.top_seller_add ?? 0),
+      favorite_toggle: Number(parsed.favorite_toggle ?? 0),
+      load_more: Number(parsed.load_more ?? 0),
+    };
+    next[metric] += 1;
+    localStorage.setItem(MENU_STATS_KEY, JSON.stringify(next));
+  };
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("cartItems");
-    if (savedCart) {
-      setData(JSON.parse(savedCart));
+    try {
+      const rawFavorites = localStorage.getItem(FAVORITES_KEY);
+      if (!rawFavorites) return;
+      const parsed = JSON.parse(rawFavorites) as number[];
+      setFavorites(Array.isArray(parsed) ? parsed : []);
+    } catch {
+      setFavorites([]);
     }
   }, []);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  useEffect(() => {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  }, [favorites]);
+
+  const topSellers = useMemo(
+    () => products.filter((product) => TOP_SELLER_IDS.includes(product.id)),
+    [products]
+  );
+
+  const filteredProducts = useMemo(() => {
+    const results = products.filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = activeCategory === "Todos" || product.category === activeCategory;
+      const matchesPrice = !onlyAffordable || product.price <= 20;
+      const matchesFavorite = !onlyFavorites || favorites.includes(product.id);
+      return matchesSearch && matchesCategory && matchesPrice && matchesFavorite;
+    });
+
+    // Prioriza favoritos quando nao estiver filtrando apenas favoritos.
+    if (!onlyFavorites) {
+      return results.sort((a, b) => Number(favorites.includes(b.id)) - Number(favorites.includes(a.id)));
+    }
+    return results;
+  }, [products, searchTerm, activeCategory, onlyAffordable, onlyFavorites, favorites]);
+
+  const displayedProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredProducts.length;
+
+  const addProductToCart = (product: Product, source: "grid" | "top") => {
+    addItem({ name: product.name, price: product.price, quantity: 1 });
+    recordMenuMetric(source === "top" ? "top_seller_add" : "add_to_cart");
+    setToastVisible(true);
+    window.setTimeout(() => setToastVisible(false), 1800);
   };
 
-  const handleAdd = (product: string, price: number, quantity: number) => {
-    const existingItemIndex = data.findIndex(
-      (item) => item.product === product
+  const toggleFavorite = (productId: number) => {
+    recordMenuMetric("favorite_toggle");
+    setFavorites((current) =>
+      current.includes(productId) ? current.filter((id) => id !== productId) : [...current, productId]
     );
-    let updatedCart;
-    if (existingItemIndex >= 0) {
-      updatedCart = data.map((item, index) =>
-        index === existingItemIndex
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      );
-    } else {
-      const novoItem = { product, price, quantity };
-      updatedCart = [...data, novoItem];
-    }
-
-    setData(updatedCart);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 2000);
   };
 
-  const filteredProducts = products.filter((product) => {
-    if (filter === "preco") {
-      return product.price <= 20;
-    }
-    if (filter === "categoria") {
-      return product.category.toLowerCase().includes(searchTerm.toLowerCase());
-    }
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  const resetAndApplyCategory = (category: CategoryFilter) => {
+    setActiveCategory(category);
+    setVisibleCount(PAGE_SIZE);
+  };
 
   return (
-    <div className={styles.menuPage}>
-      {showMessage && (
-        <div className={styles.toast}>Item adicionado ao carrinho!</div>
-      )}
-      <h1>
-        "Sinta o sabor da felicidade em cada gole de café e em cada fatia de
-        torta"
-      </h1>
-      <h2>Uma combinação que vai deixar seu dia ainda mais doce!</h2>
-      <Image
-        className={styles.imgcoffee}
-        src={coffeimg}
-        alt="Imagem de fundo"
-        objectFit="cover"
-        quality={100}
-        priority={true}
-      />
+    <main className={styles.page}>
+      {toastVisible && <div className={styles.toast}>Produto adicionado ao carrinho</div>}
 
-      <div className={styles.filterSection}>
-        <input
-          type="text"
-          placeholder="Buscar produtos..."
-          className={styles.searchInput}
-          onChange={handleSearch}
-        />
-        <button
-          onClick={() => setFilter("preco")}
-          className={styles.filterButton}
-        >
-          Filtrar por Preço
-        </button>
-        <button
-          onClick={() => setFilter("categoria")}
-          className={styles.filterButton}
-        >
-          Filtrar por Categoria
-        </button>
-        
-        <Link className={styles.carrinho} href="/carrinho" >
-         Ver Carrinho
-        </Link>
-      </div>
+      <header className={styles.hero}>
+        <Image className={styles.heroImage} src={coffeeImage} alt="Cafe artesanal" priority />
+        <div className={styles.heroOverlay} />
 
-      <div className={styles.menuContainer}>
-        <div className={styles.transparentRectangle}>
-          <h2>Nossas Tortas</h2>
-          <ul>
-            {filteredProducts
-              .filter((product) => product.category === "Doces")
-              .map((product) => (
-                <li key={product.id}>
-                  <div>
-                    <strong>
-                      {product.name} - R$ {product.price}
-                    </strong>
-                    <p className={styles.descricao}>{product.description}</p>
-                  </div>
-                  <button
-                    className={styles.iconlink}
-                    title="Adicionado ao carrinho"
-                    onClick={() => handleAdd(product.name, product.price, 1)}
-                  >
-                    <FiPlus className={styles.plusIcon} />
-                  </button>
-                </li>
+        <div className={styles.heroContent}>
+          <span className={styles.kicker}>Menu da casa</span>
+          <h1>Escolha seu cafe ideal para agora.</h1>
+          <p>Catalogo com bebidas e doces artesanais para consumo na loja, retirada ou entrega.</p>
+        </div>
+      </header>
+
+      <section className={styles.catalog}>
+        <div className={styles.toolbar}>
+          <input
+            type="search"
+            className={styles.searchInput}
+            placeholder="Buscar por nome ou descricao"
+            value={searchTerm}
+            onChange={(event) => {
+              setSearchTerm(event.target.value);
+              setVisibleCount(PAGE_SIZE);
+            }}
+            aria-label="Buscar produtos do menu"
+          />
+
+          <div className={styles.filterRow}>
+            <div className={styles.chips}>
+              {CATEGORY_FILTERS.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  className={`${styles.chip} ${activeCategory === category ? styles.chipActive : ""}`}
+                  onClick={() => resetAndApplyCategory(category)}
+                >
+                  {category}
+                </button>
               ))}
-          </ul>
+            </div>
+
+            <button
+              type="button"
+              className={`${styles.chip} ${onlyAffordable ? styles.chipActive : ""}`}
+              onClick={() => {
+                setOnlyAffordable((current) => !current);
+                setVisibleCount(PAGE_SIZE);
+              }}
+            >
+              Ate R$ 20
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.chip} ${onlyFavorites ? styles.chipActive : ""}`}
+              onClick={() => {
+                setOnlyFavorites((current) => !current);
+                setVisibleCount(PAGE_SIZE);
+              }}
+            >
+              Favoritos
+            </button>
+
+            <Link href="/carrinho" className={styles.cartButton}>
+              <FiShoppingBag />
+              Ir para carrinho
+            </Link>
+          </div>
         </div>
 
-        <div className={styles.roundedRectangle}>
-          <h2>Nossos Cafés</h2>
-          <ul>
-            {filteredProducts
-              .filter((product) => product.category === "Bebidas")
-              .map((product) => (
-                <li key={product.id}>
-                  <div>
-                    <strong>
-                      {product.name} - R$ {product.price}
-                    </strong>
-                    <p className={styles.descriCafe}>{product.description}</p>
+        <section className={styles.topSellers}>
+          <div className={styles.topHeader}>
+            <h2>
+              <Star size={18} /> Mais vendidos
+            </h2>
+            <p>Selecao de itens com maior saida esta semana.</p>
+          </div>
+          <div className={styles.topGrid}>
+            {topSellers.map((product) => {
+              const cover = getCoverMeta(product.category);
+              return (
+                <article key={product.id} className={styles.topCard}>
+                  <div className={`${styles.cover} ${cover.className}`}>
+                    {cover.icon}
+                    <span>{cover.label}</span>
                   </div>
-                  <button
-                    className={styles.iconCafe}
-                    title="Adicionado ao carrinho"
-                    onClick={() => handleAdd(product.name, product.price, 1)}
-                  >
-                    <FiPlus className={styles.plusIcon} />
-                  </button>
-                </li>
-              ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+                  <div className={styles.topBody}>
+                    <h3>{product.name}</h3>
+                    <strong>R$ {product.price.toFixed(2)}</strong>
+                    <button type="button" className={styles.quickAdd} onClick={() => addProductToCart(product, "top")}>
+                      <FiPlus />
+                      Adicionar
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {filteredProducts.length === 0 ? (
+          <div className={styles.emptyState}>
+            <h2>Nenhum item encontrado</h2>
+            <p>Tente ajustar os filtros ou pesquisar por outro termo.</p>
+          </div>
+        ) : (
+          <>
+            <div className={styles.grid}>
+              {displayedProducts.map((product) => {
+                const cover = getCoverMeta(product.category);
+                const isFavorite = favorites.includes(product.id);
+
+                return (
+                  <article key={product.id} className={styles.card}>
+                    <div className={`${styles.cover} ${cover.className}`}>
+                      {cover.icon}
+                      <span>{cover.label}</span>
+                    </div>
+
+                    <div className={styles.cardHead}>
+                      <span className={styles.category}>{product.category}</span>
+                      <strong className={styles.price}>R$ {product.price.toFixed(2)}</strong>
+                    </div>
+
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+
+                    <div className={styles.cardActions}>
+                      <button
+                        type="button"
+                        className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteActive : ""}`}
+                        onClick={() => toggleFavorite(product.id)}
+                        aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                      >
+                        <Heart size={16} />
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.addButton}
+                        onClick={() => addProductToCart(product, "grid")}
+                        title={`Adicionar ${product.name} ao carrinho`}
+                      >
+                        <FiPlus />
+                        Adicionar
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            {hasMore && (
+              <div className={styles.loadMoreWrap}>
+                <button
+                  type="button"
+                  className={styles.loadMoreButton}
+                  onClick={() => {
+                    recordMenuMetric("load_more");
+                    setVisibleCount((n) => n + PAGE_SIZE);
+                  }}
+                >
+                  Carregar mais
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+    </main>
   );
-};
-
-export default Menu;
+}

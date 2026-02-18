@@ -1,288 +1,195 @@
 .loginContainer {
   position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    overflow: hidden;
-    min-height: 100vh;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 2rem);
 }
-.imgcoffee{
+
+.imageContainer {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  z-index: -2;
+}
+
+.imgcoffee {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
-  opacity: 0.9; 
 }
 
-.divAlign{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
- // background-color: red;
- margin-top: 10px;
-
-  input{
-    width: 100%;
-    height: 30px;
-
-    &::placeholder{
-      color: #a09e9ee0;
-    }
-  }
-  h5{
-    color: #fff;
-  }
-  label{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    
-  }
-}
-.imageContainer {
+.imageContainer::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
+  inset: 0;
+  background:
+    radial-gradient(circle at 75% 12%, rgba(225, 139, 72, 0.25), transparent 45%),
+    linear-gradient(160deg, rgba(21, 13, 9, 0.48), rgba(21, 13, 9, 0.88));
 }
+
 .loginBox {
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3); /* Sombra ajustada */
+  width: min(720px, 100%);
+  border-radius: 22px;
+  padding: clamp(1rem, 3vw, 1.7rem);
+  background: rgba(255, 248, 239, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 18px 40px rgba(15, 10, 7, 0.33);
+  backdrop-filter: blur(9px);
+  color: #fff5ea;
+
+  h1 {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: clamp(1.65rem, 4vw, 2.3rem);
+  }
+}
+
+.kicker {
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffe2c4;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.description {
+  margin-top: 0.55rem;
   text-align: center;
-  color: #fff;
-  overflow: hidden;
+  color: #ebd7c3;
+  line-height: 1.5;
 }
+
 .form {
-  display: flex;
-  flex-direction: column;
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.8rem;
 }
-.section{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 5px;
-}
-.inputGroupStreet{
-  width: 80%;
-  input{
-    width: 90%;
+
+.divAlign {
+  display: grid;
+  gap: 0.35rem;
+
+  label span {
+    font-size: 0.9rem;
+    color: #f4e4d4;
+    font-weight: 700;
   }
-}
-.inputGroupNumber{
-  width: 20%;
-  input{
-    width: 80%;
-  }
-}
-.divCountry{
-  display:flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 10px;
 
-}
-.inputGroupCity{
-  display: flex;
-  flex-direction: row;
-  width: 60%;
-  input{
-    width: 80%;
-  }
-}
-.inputGroupTown{
-  display: flex;
-  flex-direction: row;
-  width: 40%;
-  input{
-    width: 80%;
-  }
-}
-
-.divStateCEP{
-//background-color: red;
-display: flex;
-flex-direction: row;
-margin-top: 10px;
-}
-.inputGroupState{
-
-}
-.inputGroupCEP{
-  input{
-    &::placeholder{
-     color: #aaaaaada;
-    }
-
-  }
-}
-
-.inputGroupComplement{
-  width: 100%;
-  //background-color: red;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 10px;
-
-  textarea{
+  input {
     width: 100%;
-    height: 60px;
-    padding-left: 3px;
-    &::placeholder{
-      padding-left: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    height: 42px;
+    padding: 0 0.75rem;
+    outline: none;
+
+    &::placeholder {
+      color: #deccbc;
+    }
+
+    &:focus {
+      border-color: #ffd8ab;
+      box-shadow: 0 0 0 2px rgba(255, 216, 171, 0.2);
     }
   }
 }
 
-.DivPassword{
- // background-color: red;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+.DivPassword {
+  display: grid;
+  gap: 0.8rem;
 }
 
-.inputGroupPass{
-  width: 45%;
- // background-color:green;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.inputGroupRepeatPass{
-  width: 45%;
-  //background-color:green;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.inputGroup {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-
-
-
-  .inputGroup button {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-  }
+.inputGroupPass,
+.inputGroupRepeatPass {
+  display: grid;
+  gap: 0.35rem;
 
   label {
+    color: #f4e4d4;
     font-size: 0.9rem;
-    font-weight: bold;
-    color: #0c0808;
-    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+}
 
-    span {
-      margin-right: 0.5rem;
+.passwordContainer {
+  display: grid;
+  grid-template-columns: 1fr 42px;
+  align-items: center;
+  gap: 0.45rem;
+
+  input {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    height: 42px;
+    padding: 0 0.75rem;
+    outline: none;
+
+    &::placeholder {
+      color: #deccbc;
     }
   }
 }
 
+.eyeIcon {
+  display: grid;
+  place-items: center;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.14);
+  color: #f0dcc8;
+  cursor: pointer;
 
-.passwordContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
- // background-color: red;
-
- input{
-  padding-left: 5px;
-  &::placeholder{
-    padding-left: 2px;
-    
+  &:focus-visible {
+    outline: 2px solid #ffd8ab;
+    outline-offset: 2px;
   }
- }
 }
 
+.passwordInfo {
+  color: #ead7c6;
+  font-size: 0.85rem;
+}
 
-
-.eyeIcon {
- /// position: relative;
- // top: 50%;
- // right: 10px;
- //background-color: #00c853;
- // transform: translateY(-50%);
- margin-left: 3px;
-  cursor: pointer;
-  color: #aaa;
-
-  &:hover {
-    color: #aaaaaab7;
-  }
+.error {
+  color: #ffb4b4;
+  font-size: 0.86rem;
 }
 
 .signupButton {
-  background-color: #00c853;
-  color: #fff;
-  padding: 0.75rem;
+  margin-top: 0.2rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
+  background: linear-gradient(140deg, #d67a33, #b8642a);
+  color: #fff;
+  font-weight: 800;
   font-size: 1rem;
+  padding: 0.85rem 1rem;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 10px 22px rgba(214, 122, 51, 0.32);
+  transition: transform 0.2s ease;
 
   &:hover {
-    background-color: #009624;
+    transform: translateY(-1px);
   }
 }
 
-.signupLink {
-  font-size: 0.8rem;
-  margin-top: 1rem;
-
-  a {
-    color: #00c853;
-    text-decoration: underline;
-    transition: transform 0.8s ease;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-  }
-}
-.addressGroup {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-
-  .fullWidth {
-    grid-column: span 2;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-
-    .fullWidth {
-      grid-column: span 1;
-    }
-  }
+.successMessage {
+  margin-top: 0.8rem;
+  text-align: center;
+  color: #b7ffca;
+  font-weight: 700;
 }
